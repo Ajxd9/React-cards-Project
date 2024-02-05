@@ -1,0 +1,21 @@
+.notFoundContainer{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.notfoundDiv{
+    width: 70%;
+    text-align: center;
+}
+.notfoundDiv h1{
+    font-size: 2rem;
+}
+.notfoundDiv h2{
+    font-size: 1em;
+}
+.text404{
+    font-size: 10em;
+}

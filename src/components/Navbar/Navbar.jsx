@@ -5,6 +5,8 @@ import searchIconLight from '../../assets/images/search-w.png';
 import searchIconDark from '../../assets/images/search-b.png';
 import toggleLight from '../../assets/images/night.png';
 import toggleDark from '../../assets/images/day.png';
+import { Link } from 'react-router-dom';
+import ROUTES from '../../routes/ROUTES';
 
 const Navbar = ({ theme, setTheme }) => {
   const toggleMode = () => {
@@ -27,12 +29,10 @@ const Navbar = ({ theme, setTheme }) => {
 
   return (
     <div className={`navbar ${theme === 'dark' ? 'dark' : ''}`}>
-      <img src={logo} alt="" className="logo" />
+      <Link to={ROUTES.HOME}><img src={logo} alt="logo" className="logo" /></Link>
       <ul className={navActive}>
         <li className="nav__item">
-          <a href="#" className="nav__link">
-            Home
-          </a>
+            <Link className="nav__link" to={ROUTES.HOME}>Home</Link>
         </li>
         <li className="nav__item">
           <a href="#" className="nav__link">

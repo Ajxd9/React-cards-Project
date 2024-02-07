@@ -41,9 +41,10 @@ const HomePage=()=>{
     if(!initialDataFromServer || !initialDataFromServer.length)
     return <Typography>Could not find any items</Typography>
     return(
-        <Grid container spacing={2}>
+        <Grid container spacing={2} >
             {initialDataFromServer.map((item,index)=>(
-                <Grid item lg={3} md={6} xs={12} key={"businessesCard" + index}>
+                <Grid item lg={3} md={6} xs={12}
+                key={"businessesCard" + index}>
                 <CardComponent id={item.id}
                 title={item.title}
                 subtitle={item.subtitle}

@@ -1,10 +1,16 @@
 const ROUTES = {
   HOME: "/",
-  REGISTER: "/register",
+  SIGNUP: "/signup",
   LOGIN: "/login",
+  USER_PROFILE:"/profile",
+  EDIT_USER :"/edit-user",
+  ABOUT:"/about",
+  MY_CARDS:"/my-cards",
+  FAV_CARDS: '/fav-cards',
   EDITCARD: "/editcard",
-  CREATCAR: "/createcard",
+  CREATECARD: "/createcard",
   SANDBOX: "/sandbox",
+  CARDS: "/cards",
   NOTFOUND: "/404",
 };
 export default ROUTES;

@@ -1,60 +1,90 @@
 import { Grid, Typography } from "@mui/material";
 import CardComponent from "../components/CardComponent";
 import test1 from "../assets/images/cardImages/testImg.png";
+import { useState } from "react";
+import ROUTES from "../routes/ROUTES";
+import { useNavigate } from "react-router-dom";
 
-const handleDeleteCard=(id)=>{
+let initialDataFromServer = [
+  {
+    id: "sdlfkjgn0",
+    title: "title1",
+    subtitle: "subtitle1",
+    body: "body1",
+    img: "/assets/imgs/car 1.jpg",
+  },
+  {
+    id: "sdlfkjgn1",
+    title: "title2",
+    subtitle: "subtitle2",
+    body: "body2",
+    img: "/assets/imgs/car 2.jpg",
+  },
+  {
+    id: "sdlfkjgn2",
+    title: "title3",
+    subtitle: "subtitle3",
+    body: "body3",
+    img: "/assets/imgs/car 3.jpg",
+  },
+  {
+    id: "sdlfkjgn3",
+    title: "title4",
+    subtitle: "subtitle4",
+    body: "body4",
+    img: "/assets/imgs/car 4.jpg",
+  },
+  {
+    id: "sdlfkjgn4",
+    title: "title5",
+    subtitle: "subtitle5",
+ body: "body5",
+    img: "/assets/imgs/car 5.png",
+  },
+];
 
-};
-const HomePage=()=>{
-    let initialDataFromServer=[{
-        i:"abcedfgh1",
-        title:"title1",
-        subtitle:"subtitle1",
-        src:test1,
-        alt:"Business1",
-        body:"Content1",
-    },
-    {
-        i:"abcedfgh2",
-        title:"title2",
-        subtitle:"subtitle2",
-        src:test1,
-        alt:"Business2",
-        body:"Content2",
-    },
-    {
-        i:"abcedfgh3",
-        title:"title3",
-        subtitle:"subtitle2",
-        src:test1 ,
-        alt:"Business3",
-        body:"Content3",
-    },
-     {
-        id:"abcedfgh4",
-        title:"title4"
-        ,subtitle:"subtitle4"
-        ,src:test1,
-        alt:"Business4" ,
-        body:"Content4",}];
+const HomePage = () => {
+  const navigate = useNavigate();
+  const [dataFromServer, setDataFromServer] = useState(initialDataFromServer);
+  if (!dataFromServer || !dataFromServer.length) {
+    return <Typography>Could not find any items</Typography>;
+  }
+  const handleEditCard = (id) => {
+    navigate(`${ROUTES.EDITCARD}/${id}`);
+  };
 
-    if(!initialDataFromServer || !initialDataFromServer.length)
-    return <Typography>Could not find any items</Typography>
-    return(
-        <Grid container spacing={2} >
-            {initialDataFromServer.map((item,index)=>(
-                <Grid item lg={3} md={6} xs={12}
-                key={"businessesCard" + index}>
-                <CardComponent id={item.id}
-                title={item.title}
-                subtitle={item.subtitle}
-                src={item.src}
-                alt={item.alt}
-                body={item.body}
-                onDelete={handleDeleteCard}/>
-            </Grid>
-            ))}
-        </Grid>
+  const handleDeleteCard = (id) => {
+    console.log("father: card to delete", id);
+    setDataFromServer((currentDataFromServer) =>
+      currentDataFromServer.filter((card) => card.id !== id)
     );
+    console.log({ dataFromServer });
+  };
+
+  return (
+    <Grid container spacing={2}>
+      {dataFromServer.map((item, index) => (
+        <Grid item lg={3} md={6} xs={12} key={"carsCard" + index}>
+          <CardComponent
+            id={item.id}
+            title={item.title}
+            subtitle={item.subtitle}
+            img={item.img}
+            phone="0500000000"
+            address={{
+              city: "South park",
+              street: "Hogwarts",
+              houseNumber: 123,
+              zipCode: 12345,
+            }}
+            cardNumber={12345}
+            onDelete={handleDeleteCard}
+            onEdit={handleEditCard}
+          />
+        </Grid>
+      ))}
+    </Grid>
+  );
 };
+
 export default HomePage;

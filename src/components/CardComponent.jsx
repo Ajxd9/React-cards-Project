@@ -8,8 +8,14 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import PhoneIcon from '@mui/icons-material/Phone';
 import propTypes from "prop-types";
 import test1 from "../assets/images/cardImages/testImg.png";
+import { useNavigate } from "react-router-dom";
+import ROUTES from "../routes/ROUTES";
+
+
+
 
 const CardComponent =(props) =>{
+    
     let {title,
         subtitle,
         src,
@@ -27,6 +33,9 @@ const CardComponent =(props) =>{
         onDelete(id);
     }
     
+    const handleEditCard=()=>{
+        onEdit(id);
+    }
     return(
         <Card sx={{width:250,m:2}} square raised>
             <CardActionArea>
@@ -40,7 +49,7 @@ const CardComponent =(props) =>{
             <Box sx={{display:'flex', justifyContent:'space-between'}}>
                 <Box>
                     <IconButton onClick={handleDeleteCard}><DeleteIcon/></IconButton>
-                    <IconButton><EditIcon/></IconButton>
+                    <IconButton onClick={handleEditCard}><EditIcon/></IconButton>
                 </Box>
                 <Box>
                     <IconButton><FavoriteIcon/></IconButton>

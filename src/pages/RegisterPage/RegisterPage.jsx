@@ -4,48 +4,29 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
-
+import { Link, useNavigate } from "react-router-dom";
+import ROUTES from '../../routes/ROUTES';
 const RegisterPage = () => {
   const [inputsValue, setInputsValue] = useState({
     first: "",
     middle: "",
     last: "",
   });
+  const navigate = useNavigate();
   const handleInputsChange = (e) => {
-    /**
-     * e.target.id -> name of property to update
-     * e.target.value -> the value
-     */
-
-    // step 1
-    // setInputsValue((CopyOfCurrentValue) => {
-    // CopyOfCurrentValue.first = e.target.value;
-    // return CopyOfCurrentValue; //x
-    // return { ...CopyOfCurrentValue }; //v
-    // });
-
-    // step 2
-    // setInputsValue((CopyOfCurrentValue) => {
-    //   CopyOfCurrentValue[e.target.id] = e.target.value;
-    //   return { ...CopyOfCurrentValue };
-    // });
-
-    // step 3
-    // setInputsValue((CopyOfCurrentValue) => ({
-    //   ...CopyOfCurrentValue,
-    //   first: e.target.value,
-    // }));
-
-    // final boss
     setInputsValue((CopyOfCurrentValue) => ({
       ...CopyOfCurrentValue,
       [e.target.id]: e.target.value,
     }));
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault(); 
+    
+    navigate(ROUTES.LOGIN);
   };
   return (
     <Box
@@ -62,7 +43,7 @@ const RegisterPage = () => {
       <Typography component="h1" variant="h5">
         Sign up
       </Typography>
-      <Box component="form" noValidate sx={{ mt: 3 }}>
+      <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 3 }}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={4}>
             <TextField
@@ -225,7 +206,7 @@ const RegisterPage = () => {
         </Button>
         <Grid container justifyContent="flex-end">
           <Grid item>
-            <Link href="#" variant="body2">
+          <Link to={ROUTES.LOGIN}>
               Already have an account? Sign in
             </Link>
           </Grid>

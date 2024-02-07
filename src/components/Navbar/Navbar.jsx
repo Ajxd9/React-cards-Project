@@ -35,19 +35,13 @@ const Navbar = ({ theme, setTheme }) => {
             <Link className="nav__link" to={ROUTES.HOME}>Home</Link>
         </li>
         <li className="nav__item">
-          <a href="#" className="nav__link">
-            Products
-          </a>
+        <Link className="nav__link" to={ROUTES.ABOUT}>About</Link>
         </li>
         <li className="nav__item">
-          <a href="#" className="nav__link">
-            Features
-          </a>
+        <Link className="nav__link" to={ROUTES.PROFILE}>My Cards</Link>
         </li>
         <li className="nav__item">
-          <a href="#" className="nav__link">
-            About
-          </a>
+        <Link className="nav__link" to={ROUTES.SANDBOX}>SANDBOX</Link>
         </li>
       </ul>
 

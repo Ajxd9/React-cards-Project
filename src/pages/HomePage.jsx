@@ -1,9 +1,11 @@
 import { Grid, Typography } from "@mui/material";
 import CardComponent from "../components/CardComponent";
 import test1 from "../assets/images/cardImages/testImg.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ROUTES from "../routes/ROUTES";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
 
 let initialDataFromServer = [
   {
@@ -42,23 +44,31 @@ let initialDataFromServer = [
     img: "/assets/imgs/car 5.png",
   },
 ];
+//const initialDataFromServer=[];
 
 const HomePage = () => {
   const navigate = useNavigate();
-  const [dataFromServer, setDataFromServer] = useState(initialDataFromServer);
+  const [dataFromServer, setDataFromServer] = useState([]);
+  useEffect(()=>{
+     axios
+    .get("/cards")
+    .then(({ data }) => {
+      setDataFromServer(data);
+    })
+    .catch(err=>{console.log("error from axio",err)});
+  },[]);
   if (!dataFromServer || !dataFromServer.length) {
     return <Typography>Could not find any items</Typography>;
   }
-  const handleEditCard = (id) => {
-    navigate(`${ROUTES.EDITCARD}/${id}`);
+  const handleEditCard = (_id) => {
+    navigate(`${ROUTES.EDITCARD}/${_id}`);
   };
 
   const handleDeleteCard = (id) => {
-    console.log("father: card to delete", id);
     setDataFromServer((currentDataFromServer) =>
-      currentDataFromServer.filter((card) => card.id !== id)
+      currentDataFromServer.filter((card) => card._id !== id)
     );
-    console.log({ dataFromServer });
+    console.log(id);
   };
 
   return (
@@ -66,18 +76,20 @@ const HomePage = () => {
       {dataFromServer.map((item, index) => (
         <Grid item lg={3} md={6} xs={12} key={"carsCard" + index}>
           <CardComponent
-            id={item.id}
+            id={item._id}
             title={item.title}
             subtitle={item.subtitle}
-            img={item.img}
-            phone="0500000000"
+            img={item.image.url}
+            alt={item.image.alt}
+            phoneNumber={item.phone}
             address={{
-              city: "South park",
+              
+              city: item.address.city,
               street: "Hogwarts",
               houseNumber: 123,
-              zipCode: 12345,
+              zip: item.address.zip,
             }}
-            cardNumber={12345}
+            cardNumber={item.bizNumber}
             onDelete={handleDeleteCard}
             onEdit={handleEditCard}
           />

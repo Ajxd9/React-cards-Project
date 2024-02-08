@@ -1,7 +1,7 @@
 import React from "react";
 import { Card ,CardHeader,CardContent,Typography,CardActionArea, CardMedia, Divider, IconButton} from "@mui/material";
 
-import { Box } from "@mui/system";
+import { Box, Stack } from "@mui/system";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -14,21 +14,19 @@ import ROUTES from "../routes/ROUTES";
 
 
 
-const CardComponent =(props) =>{
-    
-    let {title,
-        subtitle,
-        src,
-        alt,
-        body,
-        phoneNumber,
-        cardNumber,
-        address,
-        id,
-        onDelete,
-        onEdit,
-        onPhone,
-        onLike}=props;
+const CardComponent =({id,
+    title,
+    subtitle,
+    description, 
+    phoneNumber,
+    img,
+    alt,
+    cardNumber,
+    address,
+    onDelete,
+    onEdit,
+    onPhone,
+    onLike}) =>{
     const handleDeleteCard=()=>{
         onDelete(id);
     }
@@ -39,12 +37,28 @@ const CardComponent =(props) =>{
     return(
         <Card sx={{width:250,m:2}} square raised>
             <CardActionArea>
-                <CardMedia component="img" height="140" src={src} alt={alt}/>
+                <CardMedia component="img" height="140" src={img} alt={alt}/>
             </CardActionArea>
-            <CardHeader sx={{ textAlign: 'left' }} title={title} subheader="subtitle"/>
+            <CardHeader sx={{ textAlign: 'left' }} title={title} subheader={subtitle}/>
             <Divider></Divider>
             <CardContent>
-                <Typography sx={{ textAlign: 'left' }}>{body}</Typography>
+                <Stack >
+                    <Stack>
+                    <Typography sx={{ textAlign: 'left' }}>
+                        Phone: {phoneNumber}
+                        </Typography>
+                    </Stack>
+                    <Stack>
+                    <Typography sx={{ textAlign: 'left' }}>
+                        {address.city} {address.street} {address.houseNumber}
+                        </Typography>
+                    </Stack>
+                <Stack>
+                <Typography sx={{ textAlign: 'left' }}>
+                    Card Number:{cardNumber}
+                    </Typography>
+                </Stack>
+            </Stack>
            
             <Box sx={{display:'flex', justifyContent:'space-between'}}>
                 <Box>
@@ -64,11 +78,10 @@ CardComponent.propTypes={
     title:propTypes.string.isRequired,
     subtitle:propTypes.string.isRequired,
     src:propTypes.string.isRequired,
-   // phone:propTypes.string.isRequired,
-    //address:propTypes.string.isRequired,
-   // cardNumber:propTypes.number.isRequired,
-   // alt:propTypes.string.isRequired,
-    body:propTypes.string.isRequired,
+    phoneNumber:propTypes.string.isRequired,
+    address:propTypes.object.isRequired,
+    cardNumber:propTypes.number.isRequired,
+    alt:propTypes.string.isRequired,
     id:propTypes.string.isRequired,
 };
 CardComponent.defaultProps ={

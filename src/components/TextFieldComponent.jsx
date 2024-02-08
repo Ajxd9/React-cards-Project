@@ -1,13 +1,18 @@
-import { Button } from "@mui/material/Button";
-import { TextField } from "@mui/material/TextField";
-import { Fragment } from "react";
-const TextFieldComponent = () => {
-    return(
-        <Fragment>
-            <TextField id="outlined-basic" label="Username/Email" variant="outlined"/>
-            <TextField id="outlined-basic" label="Password" variant="outlined"/>
-            <Button variant="outlined">Login</Button>
-        </Fragment>
-    );
-};
-export default TextFieldComponent;
+import React from 'react'
+
+const TextFieldComponent = ({id,label,name,autoComplete,value}) => {
+  return (
+    <TextField
+              required
+              fullWidth
+              id="last"
+              label="Last Name"
+              name="last"
+              autoComplete="family-name"
+              value={inputsValue.last}
+              onChange={handleInputsChange}
+    />
+  )
+}
+
+export default TextFieldComponent

@@ -1,15 +1,20 @@
 import { CssBaseline } from "@mui/material";
 import LayoutPage from "./layouts/LayoutPage";
 import Router from "./routes/Router";
+import LoginContext from "./store/loginContext";
+import { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
 
 function App() {
+  const [login, setLogin] = useState(null);
   return (
-    <div className="container">
+    <LoginContext.Provider value={{ login, setLogin }}>
       <CssBaseline />
+      <ToastContainer />
       <LayoutPage>
         <Router />
       </LayoutPage>
-    </div>
+    </LoginContext.Provider>
   );
 }
 

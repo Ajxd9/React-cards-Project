@@ -1,18 +1,89 @@
-import React from 'react'
+import React, { useState } from "react";
+import {
+  TextField,
+  Button,
+  Card,
+  CardContent,
+  Typography,
+  Grid,
+} from "@mui/material";
+import axios from "axios";
 
 const CreateCardPage = () => {
-  return (
-    <div>
-      <h1> Create Card</h1>
-      <form action="/cards" method="post">
-        <label htmlFor="question">Question: </label>
-        <input type="text" name="question" id="question"/><br/>
-        <label htmlFor="answer">Answer: </label>
-        <textarea name="answer" rows="5" cols="30" id="answer"></textarea><br/>
-        <input type="submit" value="Submit"/>
-      </form>
-    </div>
-  )
-}
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [category, setCategory] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
 
-export default CreateCardPage
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(`/cards`, {
+        title,
+        description,
+        category,
+        imageUrl,
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <Card>
+      <CardContent>
+        <Typography variant="h5">Create a Card</Typography>
+
+        <form onSubmit={handleSubmit}>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                label="Title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                label="Description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                fullWidth
+                multiline
+                rows={4}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                label="Category"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                label="Image URL"
+                value={imageUrl}
+                onChange={(e) => setImageUrl(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                fullWidth
+              >
+                Submit
+              </Button>
+            </Grid>
+          </Grid>
+        </form>
+      </CardContent>
+    </Card>
+  );
+};
+
+export default CreateCardPage;

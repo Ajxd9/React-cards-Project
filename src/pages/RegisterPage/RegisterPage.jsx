@@ -1,4 +1,4 @@
-import { useState,useCallback } from "react";
+import { useState, useCallback } from "react";
 import Avatar from "@mui/material/Avatar";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -8,10 +8,12 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { Link, useNavigate } from "react-router-dom";
-import ROUTES from '../../routes/ROUTES';
+import ROUTES from "../../routes/ROUTES";
 import FormButtonComponent from "../../components/FormButtonComponent";
 import axios from "axios";
-import normalizeRegister from './normalizeRegister';
+import normalizeRegister from "./normalizeRegister";
+import { toast } from "react-toastify";
+
 const RegisterPage = () => {
   const [inputsValue, setInputsValue] = useState({
     first: "",
@@ -28,23 +30,48 @@ const RegisterPage = () => {
     street: "",
     houseNumber: "",
     zip: "",
-    isBuisness: false,
+    isBusiness: null,
   });
   const navigate = useNavigate();
   const handleInputsChange = (e) => {
-    setInputsValue((CopyOfCurrentValue) => ({
-      ...CopyOfCurrentValue,
-      [e.target.id]: e.target.value,
-    }));
+    if (e.target.type === "checkbox") {
+      setInputsValue((CopyOfCurrentValue) => ({
+        ...CopyOfCurrentValue,
+        isBuisness: e.target.checked,
+      }));
+    } else {
+      setInputsValue((CopyOfCurrentValue) => ({
+        ...CopyOfCurrentValue,
+        [e.target.id]: e.target.value,
+      }));
+    }
   };
-  const handleSubmit =  async(e) => {
-    e.preventDefault(); 
-    try{
-      await axios.post("/users",normalizeRegister(inputsValue));
-    }catch(err){ 
-      console.log("err from axios",err);
-    } 
-    navigate(ROUTES.LOGIN);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post("/users", normalizeRegister(inputsValue));
+      toast.success("🦄 Registered successfully!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      navigate(ROUTES.LOGIN);
+    } catch (err) {
+      console.log("err from axios", err);
+      toast.error("🦄 Register failed!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
   };
   return (
     <Box
@@ -231,20 +258,29 @@ const RegisterPage = () => {
           </Grid>
           <Grid item xs={12}>
             <FormControlLabel
-              control={<Checkbox value="allowExtraEmails" color="primary" />}
+              control={
+                <Checkbox
+                  value="isBusiness"
+                  id="isBusiness"
+                  color="primary"
+                  checked={inputsValue.isBusiness}
+                  onChange={handleInputsChange}
+                />
+              }
               label="Business Account"
-              
             />
           </Grid>
         </Grid>
-        <FormButtonComponent type="submit"
+        <FormButtonComponent
+          type="submit"
           variant="contained"
-          shape={"mt: 3, mb: 2"}>Sign Up</FormButtonComponent>
+          shape={"mt: 3, mb: 2"}
+        >
+          Sign Up
+        </FormButtonComponent>
         <Grid container justifyContent="flex-end">
           <Grid item>
-          <Link to={ROUTES.LOGIN}>
-              Already have an account? Sign in
-            </Link>
+            <Link to={ROUTES.LOGIN}>Already have an account? Sign in</Link>
           </Grid>
         </Grid>
       </Box>

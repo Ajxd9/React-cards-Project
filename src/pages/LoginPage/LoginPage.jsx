@@ -1,4 +1,4 @@
-import { useState} from "react";
+import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 /* mui hooks */
 import Avatar from "@mui/material/Avatar";
@@ -15,17 +15,19 @@ import CopyrightComponent from "./ui/CopyrightComponent";
 import axios from "axios";
 import ROUTES from "../../routes/ROUTES";
 import FormButtonComponent from "../../components/FormButtonComponent";
+import LoginContext from "../../store/loginContext";
+import { jwtDecode } from "jwt-decode";
+import { toast } from "react-toastify";
 
 const LoginPage = () => {
   const [emailValue, setEmailValue] = useState("");
   const [passwordValue, setPasswordValue] = useState("");
   const navigate = useNavigate();
+  const { setLogin } = useContext(LoginContext);
   const handleEmailChange = (e) => {
-
     setEmailValue(e.target.value);
   };
   const handlePasswordChange = (e) => {
-
     setPasswordValue(e.target.value);
   };
   const handleSubmit = async (e) => {
@@ -36,14 +38,38 @@ const LoginPage = () => {
         email: emailValue,
         password: passwordValue,
       });
-      console.log("data from axios",data);
+      //if (e.target.remember.checked) {
+      localStorage.setItem("token", data);
+      const decoded = jwtDecode(data);
+      //} else {
+      // sessionStorage.setItem("token", data);
+      //}
+      setLogin(decoded);
+      toast.success("🦄 Logged-in successfully!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       navigate(ROUTES.HOME);
-      
     } catch (err) {
       console.log("err from axios", err);
+      toast.error("🦄 Log-in failed!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      setLogin(null);
+      localStorage.clear();
     }
   };
-
 
   return (
     <Grid container component="main" sx={{ height: "100vh" }}>
@@ -115,10 +141,11 @@ const LoginPage = () => {
               label="Remember me"
             />
             <FormButtonComponent
-            type="submit"
-            fullWidth
-            variant="contained"
-            shape= "mt: 3, mb: 2 ">
+              type="submit"
+              fullWidth
+              variant="contained"
+              shape="mt: 3, mb: 2 "
+            >
               Sign In
             </FormButtonComponent>
             <Grid container>

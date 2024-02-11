@@ -6,7 +6,10 @@ import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 
 function App() {
-  const [login, setLogin] = useState(null);
+  const [login ,setLogin] = useState({
+    user: null,
+    role: "",
+  })
   return (
     <LoginContext.Provider value={{ login, setLogin }}>
       <CssBaseline />

@@ -1,14 +1,28 @@
 import ROUTES from "../routes/ROUTES";
 
 const alwaysLinks = [
-  { to: ROUTES.HOME, children: "Home page" },
-  { to: ROUTES.ABOUT, children: "About Us page" },
-];
-const loggedInLinks = [{ to: "/profile", children: "Profile page" }];
-const bizLinks = [{ to: ROUTES.CREATECARD, children: "Create page" }];
-const loggedOutLinks = [
-  { to: ROUTES.REGISTER, children: "Register page" },
-  { to: ROUTES.LOGIN, children: "Login page" },
+  { to: ROUTES.HOME, children: "Home" },
+  { to: ROUTES.ABOUT, children: "About" },
 ];
 
-export { alwaysLinks, loggedInLinks, loggedOutLinks, bizLinks };
+const loggedInLinks = [
+  { to: ROUTES.FAV_CARDS, children: "My Fav Cards" },
+];
+
+const bizLinks = [
+  { to: ROUTES.MY_CARDS, children: "My Cards" },
+  { to: ROUTES.CREATECARD, children: "Create Card" },
+  
+];
+
+const adminLinks = [
+  { to: ROUTES.EDIT_USER, children: "Edit User" },
+  { to: ROUTES.CREATECARD, children: "Create Card" },
+];
+
+const loggedOutLinks = [
+  { to: ROUTES.LOGIN, children: "Login" },
+  { to: ROUTES.REGISTER, children: "Register" },
+];
+
+export { alwaysLinks, loggedInLinks, bizLinks, loggedOutLinks, adminLinks };

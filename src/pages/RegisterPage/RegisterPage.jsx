@@ -1,18 +1,24 @@
-import { useState, useCallback } from "react";
-import Avatar from "@mui/material/Avatar";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import ROUTES from "../../routes/ROUTES";
-import FormButtonComponent from "../../components/FormButtonComponent";
+import {
+  Avatar,
+  Box,
+  Checkbox,
+  Grid,
+  Typography,
+  TextField,
+  FormControlLabel,
+  Alert,
+} from "@mui/material";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import axios from "axios";
-import normalizeRegister from "./normalizeRegister";
 import { toast } from "react-toastify";
+import FormButtonComponent from "../../components/FormButtonComponent";
+import ROUTES from "../../routes/ROUTES";
+import normalizeRegister from "./normalizeRegister";
+import { validateSchema } from "../../validation/registerValidation";
+import Joi from "joi";
+
 
 const RegisterPage = () => {
   const [inputsValue, setInputsValue] = useState({
@@ -32,19 +38,24 @@ const RegisterPage = () => {
     zip: "",
     isBusiness: null,
   });
+  const [errors, setErrors] = useState({
+    first: "",
+    last: "",
+    email: "",
+    password: "",
+    phone: "",
+    country: "",
+    city: "",
+    street: "",
+    houseNumber: "",
+    zip: "",
+  });
   const navigate = useNavigate();
   const handleInputsChange = (e) => {
-    if (e.target.type === "checkbox") {
-      setInputsValue((CopyOfCurrentValue) => ({
-        ...CopyOfCurrentValue,
-        isBuisness: e.target.checked,
-      }));
-    } else {
-      setInputsValue((CopyOfCurrentValue) => ({
-        ...CopyOfCurrentValue,
-        [e.target.id]: e.target.value,
-      }));
-    }
+    setInputsValue((CopyOfCurrentValue) => ({
+      ...CopyOfCurrentValue,
+      [e.target.id]: e.target.value,
+    }));
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -73,6 +84,37 @@ const RegisterPage = () => {
       });
     }
   };
+  const handleInputsBlur = (e) => {
+    /**
+     * validateSchema[e.target.id] -> function to validate the current input
+     * inputsValue[e.target.id] -> the value inside the input
+     */
+    let dataFromJoi = validateSchema[e.target.id]({
+      [e.target.id]: inputsValue[e.target.id],
+    });
+    /*
+      {email:emailValue}
+    */
+    console.log("dataFromJoi", dataFromJoi);
+    if (dataFromJoi.error) {
+      // setPasswordError(dataFromJoi.error.details[0].message);
+      setErrors((copyOfErrors) => ({
+        ...copyOfErrors,
+        [e.target.id]: dataFromJoi.error.details[0].message,
+      }));
+    } else {
+      setErrors((copyOfErrors) => {
+        delete copyOfErrors[e.target.id];
+        return { ...copyOfErrors };
+      });
+    }
+    // if (dataFromJoi.error) {
+    //   setPasswordError(dataFromJoi.error.details[0].message);
+    // } else {
+    //   setPasswordError("");
+    // }
+  };
+  
   return (
     <Box
       sx={{
@@ -91,18 +133,20 @@ const RegisterPage = () => {
       <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 3 }}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={4}>
-            <TextField
-              autoComplete="given-name"
-              name="first"
-              required
-              fullWidth
-              id="first"
-              label="First Name"
-              autoFocus
-              value={inputsValue.first}
-              onChange={handleInputsChange}
-            />
-          </Grid>
+          <TextField
+  autoComplete="given-name"
+  name="first"
+  required
+  fullWidth
+  id="first"
+  label="First Name"
+  autoFocus
+  value={inputsValue.first}
+  onChange={handleInputsChange}
+  onBlur={handleInputsBlur}
+        />
+       {errors.first && <Alert severity="error">{errors.first}</Alert>}
+      </Grid>
           <Grid item xs={12} sm={4}>
             <TextField
               autoComplete="given-name"
@@ -125,6 +169,7 @@ const RegisterPage = () => {
               autoComplete="family-name"
               value={inputsValue.last}
               onChange={handleInputsChange}
+              onBlur={handleInputsBlur}
             />
           </Grid>
           <Grid item xs={12}>
@@ -137,6 +182,7 @@ const RegisterPage = () => {
               autoComplete="email"
               value={inputsValue.email}
               onChange={handleInputsChange}
+              onBlur={handleInputsBlur}
             />
           </Grid>
           <Grid item xs={12}>
@@ -150,6 +196,7 @@ const RegisterPage = () => {
               autoComplete="new-password"
               value={inputsValue.password}
               onChange={handleInputsChange}
+              onBlur={handleInputsBlur}
             />
           </Grid>
           <Grid item xs={12}>
@@ -162,6 +209,7 @@ const RegisterPage = () => {
               autoComplete="new-phone"
               value={inputsValue.phone}
               onChange={handleInputsChange}
+              onBlur={handleInputsBlur}
             />
           </Grid>
           <Grid item xs={12}>
@@ -207,6 +255,7 @@ const RegisterPage = () => {
               autoComplete="new-country"
               value={inputsValue.country}
               onChange={handleInputsChange}
+              onBlur={handleInputsBlur}
             />
           </Grid>
           <Grid item xs={12}>
@@ -219,6 +268,7 @@ const RegisterPage = () => {
               autoComplete="new-city"
               value={inputsValue.city}
               onChange={handleInputsChange}
+              onBlur={handleInputsBlur}
             />
           </Grid>
           <Grid item xs={12}>
@@ -231,6 +281,7 @@ const RegisterPage = () => {
               autoComplete="new-street"
               value={inputsValue.street}
               onChange={handleInputsChange}
+              onBlur={handleInputsBlur}
             />
           </Grid>
           <Grid item xs={12}>
@@ -243,6 +294,7 @@ const RegisterPage = () => {
               autoComplete="new-houseNumber"
               value={inputsValue.houseNumber}
               onChange={handleInputsChange}
+              onBlur={handleInputsBlur}
             />
           </Grid>
           <Grid item xs={12}>
@@ -254,6 +306,7 @@ const RegisterPage = () => {
               autoComplete="new-zip"
               value={inputsValue.zip}
               onChange={handleInputsChange}
+              onBlur={handleInputsBlur}
             />
           </Grid>
           <Grid item xs={12}>
@@ -275,6 +328,7 @@ const RegisterPage = () => {
           type="submit"
           variant="contained"
           shape={"mt: 3, mb: 2"}
+          disabled={errors}
         >
           Sign Up
         </FormButtonComponent>

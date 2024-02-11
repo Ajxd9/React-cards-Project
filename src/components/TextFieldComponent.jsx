@@ -1,18 +1,37 @@
-import React from 'react'
+import { Grid,TextField as MuiTextField,Alert} from "@mui/material";
 
-const TextFieldComponent = ({id,label,name,autoComplete,value}) => {
+const CustomTextField = ({
+  id,
+  label,
+  required,
+  fullWidth,
+  autoComplete,
+  type,
+  autoFocus,
+  value,
+  onChange,
+  onBlur,
+  errors,
+}) => {
   return (
-    <TextField
-              required
-              fullWidth
-              id="last"
-              label="Last Name"
-              name="last"
-              autoComplete="family-name"
-              value={inputsValue.last}
-              onChange={handleInputsChange}
-    />
-  )
+    <Grid item xs={6}>
+      <MuiTextField
+        id={id}
+        label={label}
+        required={required}
+        fullWidth
+        autoComplete={autoComplete}
+        type={type}
+        autoFocus={autoFocus}
+        value={value}
+        onChange={onChange}
+        onBlur={onBlur}
+      />
+      {errors && <Alert severity="error">{errors}</Alert>}
+    </Grid>
+  );
+};
+CustomTextField.defaultProps = {
+  autoFocus:false,
 }
-
-export default TextFieldComponent
+export default CustomTextField;

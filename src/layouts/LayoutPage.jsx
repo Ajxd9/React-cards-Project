@@ -1,21 +1,21 @@
 
 import React from 'react'
-import FooterComponent from './footer/FooterComponent'
-import Navbar from '../components/Navbar/Navbar'
-import HeaderComponent from '../layouts/header/HeaderComponent'
-import MainComponent from './main/MainComponent'
-import { useEffect, useState } from 'react';
-import { Container } from '@mui/system';
+import Navbar from '../components/Navbar/Navbar';
+import HeaderComponent from '../layouts/header/HeaderComponent';
+import MainComponent from './main/MainComponent';
+import {useState } from 'react';
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import tmc from "twin-moon-color";
+import useAutoLogin from '../hooks/useAutoLogin'
+import CardDataProvider from '../store/CardDataProvider';
+import FooterComponent from './footer/FooterComponent';
+import 'ldrs/bouncy';
+import { Typography } from '@mui/material';
 
-const LayoutPage = ({children}) => {
-    //const current_theme=localStorage.getItem('current_theme');
-  
-   // const [theme, setTheme] = useState(current_theme?current_theme:'light');
-   // useEffect(()=>{ localStorage.setItem('current_theme',theme);},[theme]);
-   
+
+const LayoutPage = ({children,isLoading}) => {
+      const AutoLogin = useAutoLogin();
       const [isDarkTheme, setDarkTheme] = useState(false);
     
       const themes = tmc({
@@ -34,12 +34,16 @@ const LayoutPage = ({children}) => {
       return (
         <ThemeProvider theme={isDarkTheme ? darkMode : lightMode}>
           <CssBaseline />
+          <CardDataProvider>
           <HeaderComponent
             isDarkTheme={isDarkTheme}
             onThemeChange={handleThemeChange}
           />
-          <MainComponent>{children}</MainComponent>
+          <MainComponent>{AutoLogin ? (
+             children) : (
+            <Typography>Loading...</Typography> )}</MainComponent>
           <FooterComponent />
+          </CardDataProvider>
         </ThemeProvider>
       );
     };

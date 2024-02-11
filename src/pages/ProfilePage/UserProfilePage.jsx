@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import PhoneIcon from "@mui/icons-material/Phone";
 import EditIcon from "@mui/icons-material/Edit";
-import HomePage from "../HomePage/HomePage";
+import UserCards from "./UserCards";
 
 const UserProfilePage = () => {
   let user = {
@@ -43,7 +43,7 @@ const UserProfilePage = () => {
       <Divider sx={{ my: 2 }}>
         <Typography variant="h5">Cards</Typography>
       </Divider>
-      <HomePage />
+      <UserCards />
     </Paper>
   );
 };

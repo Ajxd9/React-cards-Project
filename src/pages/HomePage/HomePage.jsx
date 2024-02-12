@@ -9,7 +9,13 @@ import normalizeHome from "./normalizeHome";
 import LoginContext from "../../store/loginContext";
 import { toast } from "react-toastify";
 import DataContext from "../../store/CardDataContext";
-
+import {
+  handleDeleteCard,
+  handleEditCard,
+  handlePhoneNumberCard,
+  handleClickCard,
+  handleLikeCard,
+} from "./HomePageFunction";
 
 const HomePage = () => {
   const [dataFromServer, setDataFromServer] = useState([]);
@@ -33,110 +39,24 @@ const HomePage = () => {
   if (!dataFromServerFiltered || !dataFromServerFiltered.length) {
     return <Typography>Could not find any items...</Typography>;
   }
-
-  const handleDeleteCard = async (id) => {
-    try {
-      const cardToDelete = dataFromServerFiltered.find(
-        (card) => card._id === id
-      );
-      if (cardToDelete && cardToDelete.user_id === login.user._id) {
-        if (window.confirm("Are you sure you want to delete this card?")) {
-          setDataFromServer((cDataFromServer) =>
-            cDataFromServer.filter((card) => card._id !== id)
-          );
-          await axios.delete("/cards/" + id);
-          toast.success(" ✔ Delete Successfully!", {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-        }
-      } else {
-        toast.error(
-          "❗❗❗ Something`s Wrong ! Only The Creator of the card Can Delete !",
-          {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          }
-        );
-      }
-    } catch (error) {
-      toast.error("❗❗❗ Something went wrong! Please try again later.", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    }
+  const handleDeleteCardWrapper = async (id) => {
+    await handleDeleteCard(id, dataFromServerFiltered, setDataFromServer, login, toast);
   };
 
-  const handleEditCard = (id) => {
-    const cardToEdit = dataFromServerFiltered.find((card) => card._id === id);
-    if (cardToEdit && cardToEdit.user_id === login.user._id) {
-      if (window.confirm("Are you sure you want to delete this card?"))
-        navigate(`${ROUTES.EDITCARD}/${id}`);
-    } else {
-      toast.error(
-        "❗❗❗ Something`s Wrong ! Only The Creator of the card Can Edit !",
-        {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        }
-      );
-    }
+  const handleEditCardWrapper = (id) => {
+    handleEditCard(id, dataFromServerFiltered, navigate, login, toast);
   };
 
-  const handlePhoneNumberCard = (id) => {
-    navigate(`${ROUTES.VIEWCARD}/${id}`);
+  const handlePhoneNumberCardWrapper = (id) => {
+    handlePhoneNumberCard(id, navigate);
   };
 
-  const handleClickCard = (id) => {
-    navigate(`${ROUTES.VIEWCARD}/${id}`);
+  const handleClickCardWrapper = (id) => {
+    handleClickCard(id, navigate);
   };
 
-  const handleLikeCard = async (id) => {
-    try {
-      let { data } = await axios.patch("/cards/" + id);
-      setDataFromServer((cDataFromServer) => {
-        let cardIndex = cDataFromServer.findIndex((card) => card._id === id);
-        if (cardIndex >= 0) {
-          cDataFromServer[cardIndex] = data;
-        }
-        return [...cDataFromServer];
-      });
-      toast.success( "✔ Like Successfully!", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    } catch (err) {
-    }
+  const handleLikeCardWrapper = async (id) => {
+    await handleLikeCard(id, setDataFromServer, toast);
   };
   return (
     <Box>
@@ -176,11 +96,11 @@ const HomePage = () => {
               address={item.address}
               cardNumber={item.bizNumber}
               liked={item.liked}
-              onDelete={handleDeleteCard}
-              onEdit={handleEditCard}
-              onPhoneNumber={handlePhoneNumberCard}
-              onLike={handleLikeCard}
-              onIdClick={handleClickCard}
+              onDelete={() => handleDeleteCardWrapper(item._id)}
+              onEdit={() => handleEditCardWrapper(item._id)}
+              onPhoneNumber={() => handlePhoneNumberCardWrapper(item._id)}
+              onLike={() => handleLikeCardWrapper(item._id)}
+              onIdClick={() => handleClickCardWrapper(item._id)}
             />
           </Grid>
         ))}

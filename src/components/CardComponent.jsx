@@ -63,7 +63,7 @@ const CardComp = ({
       children: <FavoriteIcon color={liked ? "error" : "inherit"} />,
     },
   ];
-  const logBizIcons = [
+  const logBizIcons = login.user && login.user.type === 'business' ? [
     {
       onClick: handleEditClick,
       children: <ModeIcon />,
@@ -72,8 +72,8 @@ const CardComp = ({
       onClick: handleDeleteClick,
       children: <DeleteIcon />,
     },
-  ];
-
+  ] : [];
+  
   return (
     <Card raised>
       <CardActionArea onClick={handleClickCard}>
@@ -127,27 +127,22 @@ const CardComp = ({
                 </IconButton>
               );
             })}
-            {login.user &&
-              loggedInIcons.map((item, index) => {
-                return (
-                  <IconButton onClick={item.onClick} key={"icon1" + index}>
-                    {item.children}
-                  </IconButton>
-                );
-              })}
+            {loggedInIcons.map((item, index) => {
+              return (
+                <IconButton onClick={item.onClick} key={"icon1" + index}>
+                  {item.children}
+                </IconButton>
+              );
+            })}
           </Box>
           <Box>
-            {login.user &&
-              filterData.filter((card) =>
-                card?.user_id.includes(login.user._id)
-              ) &&
-              logBizIcons.map((item, index) => {
-                return (
-                  <IconButton onClick={item.onClick} key={"icon2" + index}>
-                    {item.children}
-                  </IconButton>
-                );
-              })}
+            {logBizIcons.map((item, index) => {
+              return (
+                <IconButton onClick={item.onClick} key={"icon2" + index}>
+                  {item.children}
+                </IconButton>
+              );
+            })}
           </Box>
         </Box>
       </CardContent>

@@ -1,18 +1,43 @@
-import { styled, alpha } from "@mui/material/styles";
+import SearchIcon from "@mui/icons-material/Search";
+import { Search, SearchIconWrapper, StyledInputBase } from "./SearchTheme";
+import { useState, useContext } from "react";
+import DataContext from "../../../store/CardDataContext";
 
-const Search = styled("div")(({ theme }) => ({
-  position: "relative",
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  "&:hover": {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
-  marginRight: theme.spacing(2),
-  marginLeft: 0,
-  width: "100%",
-  [theme.breakpoints.up("sm")]: {
-    marginLeft: theme.spacing(3),
-    width: "auto",
-  },
-}));
-export default Search;
+const SearchComp = () => {
+  const [text, setText] = useState("");
+  const { searchData, filterData, setFilterData } = useContext(DataContext);
+  
+  const handleInputChange = (e) => {
+    const searchText = e.target.value;
+    setText(searchText);
+
+    if (searchText.trim() === "") {
+      setFilterData([...searchData]);
+    } else {
+      setFilterData((prev) =>
+        prev.filter((item) =>
+          item.title.toLowerCase().includes(searchText.toLowerCase())
+        )
+      );
+    }
+  };
+
+  return (
+    <Search>
+      <SearchIconWrapper>
+        <SearchIcon />
+      </SearchIconWrapper>
+      <StyledInputBase
+        placeholder="Search…"
+        inputProps={{ "aria-label": "search" }}
+        value={text}
+        onChange={handleInputChange}
+      />
+      {filterData?.map((result, index) => (
+        <div key={result + index}>{result.name}</div>
+      ))}
+    </Search>
+  );
+};
+
+export default SearchComp;

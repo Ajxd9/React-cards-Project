@@ -63,16 +63,28 @@ const HeaderComponent = ({ isDarkTheme, onThemeChange }) => {
   };
   const handleNavigateToProfile = () => {
     
-    navigate(ROUTES.USER_PROFILE); // Replace '/user-profile' with the actual route for UserProfilePage
+    navigate(ROUTES.USER_PROFILE);
     handleMenuClose();
   };
 
   const handleNavigateToEditProfile = () => {
-    // Use the navigate function to go to the EditUserProfilePage
-    navigate(ROUTES.EDIT_USER); // Replace '/edit-user-profile' with the actual route for EditUserProfilePage
+    navigate(ROUTES.EDIT_USER);
     handleMenuClose();
   };
-
+  const handleLogout = () => {
+    // Remove token from localStorage
+    localStorage.removeItem("token");
+  
+    // Remove token from sessionStorage
+    sessionStorage.removeItem("token");
+  
+    // Navigate to the login route
+    navigate(ROUTES.LOGIN);
+  
+    // Close the menu
+    handleMenuClose();
+  };
+  
   const menuId = "primary-search-account-menu";
   const renderMenu = (
     <Menu
@@ -92,6 +104,7 @@ const HeaderComponent = ({ isDarkTheme, onThemeChange }) => {
     >
       <MenuItem onClick={handleNavigateToProfile}>Profile</MenuItem>
       <MenuItem onClick={handleNavigateToEditProfile}>My account</MenuItem>
+      <MenuItem onClick={handleLogout}>Logout</MenuItem>
     </Menu>
   );
 

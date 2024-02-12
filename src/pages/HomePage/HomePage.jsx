@@ -24,18 +24,14 @@ const HomePage = () => {
   const { filterData } = useContext(DataContext);
 
   useEffect(() => {
-    if (!login.user) {
-      navigate(ROUTES.LOGIN);
-      return;
-    }
+
     setDataFromServer(normalizeHome(filterData));
-  }, [filterData, login.user, navigate]);
+  }, [filterData]);
 
   let dataFromServerFiltered = normalizeHome(
     dataFromServer,
     login.user ? login.user._id : undefined
   );
-
   if (!dataFromServerFiltered || !dataFromServerFiltered.length) {
     return <Typography>Could not find any items...</Typography>;
   }

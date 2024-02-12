@@ -42,20 +42,24 @@ const LoginPage = () => {
     setPasswordValue(e.target.value);
   };
   const handleSubmit = async (e) => {
-    e.preventDefault(); //stop refresh
-    //status ok from server
+    e.preventDefault();
+  
     try {
       let { data } = await axios.post("/users/login", {
         email: emailValue,
         password: passwordValue,
       });
-      //if (e.target.remember.checked) {
-      localStorage.setItem("token", data);
+  
       const decoded = jwtDecode(data);
-      //} else {
-      // sessionStorage.setItem("token", data);
-      //}
+  
+      if (e.target.remember.checked) {
+        localStorage.setItem("token", data);
+      } else {
+        sessionStorage.setItem("token", data);
+      }
+  
       setLogin(decoded);
+  
       toast.success("🦄 Logged-in successfully!", {
         position: "top-right",
         autoClose: 5000,
@@ -65,6 +69,7 @@ const LoginPage = () => {
         draggable: true,
         progress: undefined,
       });
+      
       navigate(ROUTES.HOME);
     } catch (err) {
       console.log("err from axios", err);
@@ -77,10 +82,12 @@ const LoginPage = () => {
         draggable: true,
         progress: undefined,
       });
+  
       setLogin(null);
       localStorage.clear();
     }
   };
+  
   const handleEmailBlur = () => {
     let dataFromJoi = validateEmailLogin({ email: emailValue });
     console.log("dataFromJoi", dataFromJoi);
@@ -168,10 +175,10 @@ const LoginPage = () => {
               onBlur={handlePasswordBlur}
               />
               {passwordError && <Alert severity="error">{passwordError}</Alert>}
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
+              <FormControlLabel
+  control={<Checkbox name="remember" color="primary" />}
+  label="Remember me"
+/>
             <FormButtonComponent
               type="submit"
               fullWidth

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useContext, useState } from "react";
 import {
   Avatar,
   Typography,
@@ -10,24 +10,46 @@ import {
 import PhoneIcon from "@mui/icons-material/Phone";
 import EditIcon from "@mui/icons-material/Edit";
 import UserCards from "./UserCards";
+import LoginContext from "../../store/loginContext";
+import axios from "axios";
+import normalizeFromServer from "./normalizeFromServer"; // Adjust the path accordingly
 
 const UserProfilePage = () => {
-  let user = {
-    name: "John",
-    email: "<EMAIL>",
-    phone: "1234567890",
-    address: "1234 Main St",
-    imageUrl: "https://via.placeholder.com/150",
-  };
+  const { login } = useContext(LoginContext);
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get("/users/" + login.user._id);
+        const normalizedData = normalizeFromServer(response.data);
+        setUserData(normalizedData);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+        setLoading(false);
+      }
+    };
+
+    if (login.user?._id) {
+      fetchUserData();
+    }
+  }, [login.user]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <Paper elevation={3} sx={{ p: 2 }}>
       <Box sx={{ display: "flex", alignItems: "center" }}>
-        <Avatar src={user.imageUrl} sx={{ width: 150, height: 150, mr: 2 }} />
+        <Avatar src={userData.imageUrl} sx={{ width: 150, height: 150, mr: 2 }} />
         <Box sx={{ flexGrow: 1 }}>
-          <Typography variant="h4">{user.name}</Typography>
-          <Typography variant="body1">{user.email}</Typography>
-          <Typography variant="body1">{user.phone}</Typography>
-          <Typography variant="body1">{user.address}</Typography>
+          <Typography variant="h4">{userData.first} {userData.middle} {userData.last}</Typography>
+          <Typography variant="body1">{userData.email}</Typography>
+          <Typography variant="body1">{userData.phone}</Typography>
+          <Typography variant="body1">{userData.address}</Typography>
         </Box>
 
         <Box>

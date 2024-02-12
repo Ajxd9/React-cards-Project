@@ -5,7 +5,7 @@ import React from 'react';
 const MainComponent = ({children}) => {
   return (
     <div>
-      <Container sx={{mt:15}}>
+      <Container sx={{mt:5}}>
         {children}
       </Container>
     </div>

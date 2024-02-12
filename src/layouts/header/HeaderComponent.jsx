@@ -20,6 +20,7 @@ import FilterComponent from "./ui/FilterComponent";
 import { useNavigate } from "react-router-dom";
 import LoginContext from "../../store/loginContext";
 import { useContext } from "react";
+import ROUTES from "../../routes/ROUTES";
 
 const HeaderComponent = ({ isDarkTheme, onThemeChange }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -60,6 +61,17 @@ const HeaderComponent = ({ isDarkTheme, onThemeChange }) => {
   const handleCloseDrawerClick = () => {
     setIsOpen(false);
   };
+  const handleNavigateToProfile = () => {
+    
+    navigate(ROUTES.USER_PROFILE); // Replace '/user-profile' with the actual route for UserProfilePage
+    handleMenuClose();
+  };
+
+  const handleNavigateToEditProfile = () => {
+    // Use the navigate function to go to the EditUserProfilePage
+    navigate(ROUTES.EDIT_USER); // Replace '/edit-user-profile' with the actual route for EditUserProfilePage
+    handleMenuClose();
+  };
 
   const menuId = "primary-search-account-menu";
   const renderMenu = (
@@ -78,8 +90,8 @@ const HeaderComponent = ({ isDarkTheme, onThemeChange }) => {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={handleNavigateToProfile}>Profile</MenuItem>
+      <MenuItem onClick={handleNavigateToEditProfile}>My account</MenuItem>
     </Menu>
   );
 

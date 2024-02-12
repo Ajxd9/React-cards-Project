@@ -80,8 +80,7 @@ const HomePage = () => {
         color="inherit"
         sx={{ mb: 2 }}
       >
-        This is a simple app for creating business cards. You can create your
-        own business card and share it with your friends and all the world.
+        This is a simple app for creating business cards.
       </Typography>
       <Divider sx={{ mt: 2, mb: 2 }} />
       <Grid container spacing={2} sx={{ mb: 8 }}>

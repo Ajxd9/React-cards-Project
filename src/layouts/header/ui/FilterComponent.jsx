@@ -1,14 +1,27 @@
+import { useState, useContext } from "react";
+import DataContext from "../../../store/CardDataContext";
+import {
+  Search,
+  SearchIconWrapper,
+  StyledInputBase
+} from "./SearchTheme";
 import SearchIcon from "@mui/icons-material/Search";
-import Search from "./Search";
-import SearchIconWrapper from "./SearchIconWrapper";
-import StyledInputBase from "./StyledInputBase";
-import { useState } from "react";
 
-const FilterComponent = () => {
-  const [txt, setTxt] = useState("");
+const SearchComp = () => {
+  const [searchText, setSearchText] = useState("");
+  const { filterData, setFilterData } = useContext(DataContext);
 
   const handleInputChange = (e) => {
-    setTxt(e.target.value);
+    const searchText = e.target.value;
+    setSearchText(searchText);
+
+    const filteredData = searchText.trim() === ""
+      ? [...filterData]
+      : filterData.filter(item =>
+          item.title.toLowerCase().includes(searchText.toLowerCase())
+        );
+
+    setFilterData(filteredData);
   };
 
   return (
@@ -19,11 +32,14 @@ const FilterComponent = () => {
       <StyledInputBase
         placeholder="Search…"
         inputProps={{ "aria-label": "search" }}
-        value={txt}
+        value={searchText}
         onChange={handleInputChange}
       />
+      {filterData?.map((result) => (
+        <div key={result.id}>{result.name}</div>
+      ))}
     </Search>
   );
 };
 
-export default FilterComponent;
+export default SearchComp;

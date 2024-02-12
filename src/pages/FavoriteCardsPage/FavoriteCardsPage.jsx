@@ -1,12 +1,13 @@
-import { Typography, Grid, Box, Divider } from "@mui/material";
+// FavoriteCardsPage.js
+import React, { useContext, useEffect, useState } from "react";
+import { Typography, Box, Divider, Grid } from "@mui/material";
 import CardsComp from "../../components/CardComponent";
-import { useContext, useEffect, useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ROUTES from "../../routes/ROUTES";
 import LoginContext from "../../store/loginContext";
 import normalizeHome from "../HomePage/normalizeHome";
-import { toast } from "react-toastify";
+import { commonToastConfig, handleDeleteCard, handleEditCard, handlePhoneNumberCard, handleClickCard, handleLikeCard } from "../../services/CardFunctions";
+import axios from "axios";
 
 const FavoriteCardsPage = () => {
   const [dataFromServer, setDataFromServer] = useState([]);
@@ -40,40 +41,24 @@ const FavoriteCardsPage = () => {
     return <Typography>Could not find any items...</Typography>;
   }
 
-  const handleEditCard = (id) => {
-    navigate(`${ROUTES.EDITCARD}/${id}`);
-  };
-  const handleClickCard = (id) => {
-    navigate(`${ROUTES.VIEWCARD}/${id}`);
+  const handleDeleteCardWrapper = async (id) => {
+    await handleDeleteCard(id, dataFromServerFiltered, setDataFromServer, login);
   };
 
-  const handleDeleteCard = (id) => {
-    setDataFromServer((currentDataFromServer) =>
-      currentDataFromServer.filter((card) => card._id !== id)
-    );
+  const handleEditCardWrapper = (id) => {
+    handleEditCard(id, dataFromServerFiltered, navigate, login);
   };
 
-  const handleLikeCard = async (id) => {
-    try {
-      let { data } = await axios.patch("/cards/" + id);
-      setDataFromServer((cDataFromServer) => {
-        let cardIndex = cDataFromServer.findIndex((card) => card._id === id);
-        if (cardIndex >= 0) {
-          cDataFromServer[cardIndex] = data;
-        }
-        return [...cDataFromServer];
-      });
-      toast.success(" ✔ Like Successfully!", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    } catch (err) {}
+  const handlePhoneNumberCardWrapper = (id) => {
+    handlePhoneNumberCard(id, navigate);
+  };
+
+  const handleClickCardWrapper = (id) => {
+    handleClickCard(id, navigate);
+  };
+
+  const handleLikeCardWrapper = async (id) => {
+    await handleLikeCard(id, setDataFromServer);
   };
 
   return (
@@ -86,15 +71,7 @@ const FavoriteCardsPage = () => {
         marginBottom: 10,
       }}
     >
-      <Typography
-        component="h3"
-        variant="h3"
-        align={"center"}
-        color={"primary"}
-        sx={{ my: 2, mt: 15 }}
-      >
-        Welcome to my Fav Page Here you can see all your cards
-      </Typography>
+      {/* ... (existing JSX) */}
       <Divider sx={{ my: 2 }}>My Fav Cards</Divider>
       <Grid container spacing={2}>
         {dataFromServerFiltered.map((item, index) => (
@@ -108,10 +85,10 @@ const FavoriteCardsPage = () => {
               address={item.address}
               cardNumber={item.bizNumber}
               liked={item.liked}
-              onDelete={handleDeleteCard}
-              onEdit={handleEditCard}
-              onIdClick={handleClickCard}
-              onLike={handleLikeCard}
+              onDelete={() => handleDeleteCardWrapper(item._id)}
+              onEdit={() => handleEditCardWrapper(item._id)}
+              onIdClick={() => handleClickCardWrapper(item._id)}
+              onLike={() => handleLikeCardWrapper(item._id)}
             />
           </Grid>
         ))}

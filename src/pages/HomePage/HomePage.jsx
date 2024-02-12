@@ -15,7 +15,7 @@ import {
   handlePhoneNumberCard,
   handleClickCard,
   handleLikeCard,
-} from "./HomePageFunction";
+} from "../../services/CardFunctions";
 
 const HomePage = () => {
   const [dataFromServer, setDataFromServer] = useState([]);

@@ -18,8 +18,12 @@ const HomePage = () => {
   const { filterData } = useContext(DataContext);
 
   useEffect(() => {
+    if (!login.user) {
+      navigate(ROUTES.LOGIN);
+      return;
+    }
     setDataFromServer(normalizeHome(filterData));
-  }, [filterData]);
+  }, [filterData, login.user, navigate]);
 
   let dataFromServerFiltered = normalizeHome(
     dataFromServer,

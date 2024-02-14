@@ -155,16 +155,6 @@ const EditUserProfilePage = () => {
           <Button
             fullWidth
             type="button"
-            color="error"
-            variant="outlined"
-            sx={{ mt: 3, mb: 2 }}
-            onClick={() => navigate(ROUTES.HOME)}
-          >
-            CANCEL
-          </Button>
-          <Button
-            fullWidth
-            type="button"
             variant="outlined"
             sx={{ mt: 3, mb: 2 }}
             onClick={() => {
@@ -177,7 +167,7 @@ const EditUserProfilePage = () => {
               });
             }}
           >
-            🔄 REFRESH
+            Clear 🧽
           </Button>
         </Box>
         <Button

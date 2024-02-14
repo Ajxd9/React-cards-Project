@@ -56,6 +56,7 @@ const LoginPage = () => {
         localStorage.setItem("token", data);
       } else {
         sessionStorage.setItem("token", data);
+        localStorage.setItem("token", data);
       }
   
       setLogin(decoded);

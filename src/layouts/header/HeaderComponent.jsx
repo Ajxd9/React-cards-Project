@@ -183,7 +183,6 @@ const HeaderComponent = ({ isDarkTheme, onThemeChange }) => {
           >
             LOGO
           </Typography>
-          {/* Add an Avatar for the user in the navbar */}
           
           <Links />
           <FilterComponent />

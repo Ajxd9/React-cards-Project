@@ -19,7 +19,7 @@ const adminLinks = [
 
 const loggedOutLinks = [
   { to: ROUTES.LOGIN, children: "Login" },
-  { to: ROUTES.REGISTER, children: "Register" },
+  { to: ROUTES.SIGNUP, children: "Register" },
 ];
 
 export { alwaysLinks, loggedInLinks, bizLinks, loggedOutLinks, adminLinks };

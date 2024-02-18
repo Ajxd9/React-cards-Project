@@ -17,6 +17,7 @@ import FirstComponent from "./../sandbox/components/FirstComponent";
 import FatherComponent from "../sandbox/components/fatherchild/FatherComponent";
 import SandboxPage from "../sandbox/pages/SandboxPage";
 import LifeCycleHooksPage from "../sandbox/pages/LifeCycleHooksPage";
+import CardViewPage from "../pages/CardView/CardViewPage";
 const Router = () => {
   return (
     <Routes>
@@ -32,6 +33,7 @@ const Router = () => {
       <Route path={ROUTES.MY_CARD} element={<UserCards />} />
       <Route path={ROUTES.FAV_CARD} element={<FavoriteCardsPage />} />
       <Route path={ROUTES.CREATECARD} element={<CreateCardPage />} />
+      <Route path={`${ROUTES.CARDS}/:id`} element={<CardViewPage />} />
       <Route path="/sandbox" element={<SandboxPage />}>
         <Route path="first-component" element={<FirstComponent />} />
         <Route path="fc" element={<FatherComponent />} />

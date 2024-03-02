@@ -6,20 +6,19 @@ import {
   adminLinks,
 } from "../../myLinks";
 import NavLinkComp from "../NavLinkComponent";
-import {Box} from "@mui/material"
-import { useContext,useEffect } from "react";
-import  LoginContext  from "../../../store/loginContext";
+import { Box } from "@mui/material";
+import { useContext, useEffect } from "react";
+import LoginContext from "../../../store/loginContext";
 
 const Links = () => {
   const { login } = useContext(LoginContext);
-  const { token } = login; // Access the token from the login state
+  const { token } = login; // Access the token from the login state if login exists
 
   useEffect(() => {
     // Code that relies on the token
     console.log("Token in YourOtherComponent:", token);
   }, [token]);
 
-  
   const loggedIn = login;
   return (
     <Box
@@ -65,6 +64,6 @@ const Links = () => {
         ))}
     </Box>
   );
-}
+};
 
 export default Links;

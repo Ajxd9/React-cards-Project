@@ -23,9 +23,9 @@ import FormButtonComponent from "../../components/FormButtonComponent";
 import LoginContext from "../../store/loginContext";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "react-toastify";
-import validateLogin, {
-  validateEmailLogin,
-  validatePasswordLogin,
+import {
+  validateEmail,
+  validatePassword,
 } from "../../validation/loginValidation";
 
 const LoginPage = () => {
@@ -43,24 +43,24 @@ const LoginPage = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     try {
       let { data } = await axios.post("/users/login", {
         email: emailValue,
         password: passwordValue,
       });
-  
+
       const decoded = jwtDecode(data);
-  
+
       if (e.target.remember.checked) {
         localStorage.setItem("token", data);
       } else {
         sessionStorage.setItem("token", data);
         localStorage.setItem("token", data);
       }
-  
+
       setLogin(decoded);
-  
+
       toast.success("🦄 Logged-in successfully!", {
         position: "top-right",
         autoClose: 5000,
@@ -70,7 +70,7 @@ const LoginPage = () => {
         draggable: true,
         progress: undefined,
       });
-      
+
       navigate(ROUTES.HOME);
     } catch (err) {
       console.log("err from axios", err);
@@ -83,14 +83,14 @@ const LoginPage = () => {
         draggable: true,
         progress: undefined,
       });
-  
-      setLogin(null);
+
+      setLogin({ user: null, role: "" });
       localStorage.clear();
     }
   };
-  
+
   const handleEmailBlur = () => {
-    let dataFromJoi = validateEmailLogin({ email: emailValue });
+    let dataFromJoi = validateEmail({ email: emailValue });
     console.log("dataFromJoi", dataFromJoi);
     if (dataFromJoi.error) {
       setEmailError(dataFromJoi.error.details[0].message);
@@ -99,7 +99,7 @@ const LoginPage = () => {
     }
   };
   const handlePasswordBlur = () => {
-    let dataFromJoi = validatePasswordLogin({ password: passwordValue });
+    let dataFromJoi = validatePassword({ password: passwordValue });
     console.log("dataFromJoi", dataFromJoi);
     if (dataFromJoi.error) {
       setPasswordError(dataFromJoi.error.details[0].message);
@@ -160,8 +160,8 @@ const LoginPage = () => {
               value={emailValue}
               onChange={handleEmailChange}
               onBlur={handleEmailBlur}
-              />
-              {emailError && <Alert severity="error">{emailError}</Alert>}
+            />
+            {emailError && <Alert severity="error">{emailError}</Alert>}
             <TextField
               margin="normal"
               required
@@ -174,12 +174,9 @@ const LoginPage = () => {
               value={passwordValue}
               onChange={handlePasswordChange}
               onBlur={handlePasswordBlur}
-              />
-              {passwordError && <Alert severity="error">{passwordError}</Alert>}
-              <FormControlLabel
-  control={<Checkbox name="remember" color="primary" />}
-  label="Remember me"
-/>
+            />
+            {passwordError && <Alert severity="error">{passwordError}</Alert>}
+
             <FormButtonComponent
               type="submit"
               fullWidth
@@ -190,11 +187,6 @@ const LoginPage = () => {
               Sign In
             </FormButtonComponent>
             <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
               <Grid item>
                 <Link to={ROUTES.SIGNUP}>
                   {"Don't have an account? Sign Up"}

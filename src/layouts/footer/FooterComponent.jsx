@@ -34,9 +34,20 @@ const FooterComponent = () => {
   return (
     <Paper
       elevation={20}
-      sx={{ position: "fixed", bottom: 0, left: 0, right: 0, mt: 1, alignItems: "center" }}
+      sx={{
+        position: "fixed",
+        bottom: 0,
+        left: 0,
+        right: 0,
+        mt: 1,
+        alignItems: "center",
+      }}
     >
-      <BottomNavigation showLabels value={selectedValue} onChange={handleNavigationChange}>
+      <BottomNavigation
+        showLabels
+        value={selectedValue}
+        onChange={handleNavigationChange}
+      >
         {alwaysIcons.map((item, index) => (
           <BottomNavigationAction
             key={"nav" + index}

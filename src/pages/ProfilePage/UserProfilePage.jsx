@@ -44,9 +44,11 @@ const UserProfilePage = () => {
   return (
     <Paper elevation={3} sx={{ p: 2 }}>
       <Box sx={{ display: "flex", alignItems: "center" }}>
-        <Avatar src={userData.imageUrl} sx={{ width: 150, height: 150, mr: 2 }} />
+        <Avatar src={userData.url} sx={{ width: 150, height: 150, mr: 2 }} />
         <Box sx={{ flexGrow: 1 }}>
-          <Typography variant="h4">{userData.first} {userData.middle} {userData.last}</Typography>
+          <Typography variant="h4">
+            {userData.first} {userData.middle} {userData.last}
+          </Typography>
           <Typography variant="body1">{userData.email}</Typography>
           <Typography variant="body1">{userData.phone}</Typography>
           <Typography variant="body1">{userData.address}</Typography>

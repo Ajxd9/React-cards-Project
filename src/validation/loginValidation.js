@@ -43,10 +43,9 @@ const passwordLoginSchema = Joi.object({
 });
 
 const validateLogin = (inputsToCheck) => loginSchema.validate(inputsToCheck);
-const validateEmailLogin = (emailToCheck) =>
-  emailLoginSchema.validate(emailToCheck);
-const validatePasswordLogin = (passwordToCheck) =>
+const validateEmail = (emailToCheck) => emailLoginSchema.validate(emailToCheck);
+const validatePassword = (passwordToCheck) =>
   passwordLoginSchema.validate(passwordToCheck);
 
-export { validateEmailLogin, validatePasswordLogin };
+export { validateEmail, validatePassword };
 export default validateLogin;

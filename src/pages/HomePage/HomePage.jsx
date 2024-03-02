@@ -24,7 +24,6 @@ const HomePage = () => {
   const { filterData } = useContext(DataContext);
 
   useEffect(() => {
-
     setDataFromServer(normalizeHome(filterData));
   }, [filterData]);
 
@@ -36,7 +35,13 @@ const HomePage = () => {
     return <Typography>Could not find any items...</Typography>;
   }
   const handleDeleteCardWrapper = async (id) => {
-    await handleDeleteCard(id, dataFromServerFiltered, setDataFromServer, login, toast);
+    await handleDeleteCard(
+      id,
+      dataFromServerFiltered,
+      setDataFromServer,
+      login,
+      toast
+    );
   };
 
   const handleEditCardWrapper = (id) => {
@@ -48,7 +53,7 @@ const HomePage = () => {
   };
 
   const handleClickCardWrapper = (id) => {
-    handleClickCard(id, navigate);
+    navigate(`${ROUTES.CARDS}/${id}`);
   };
 
   const handleLikeCardWrapper = async (id) => {

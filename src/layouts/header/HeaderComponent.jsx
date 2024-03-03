@@ -12,9 +12,9 @@ import Links from "./ui/Links";
 import FilterComponent from "./ui/FilterComponent";
 import { useNavigate } from "react-router-dom";
 import loginContext from "../../store/loginContext";
-import { useState,useContext } from "react";
+import { useState, useContext } from "react";
 import ROUTES from "../../routes/ROUTES";
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
 import LeftDrawerComponent from "./ui/LeftDrawerComponent";
 import Hidden from "@mui/material/Hidden";
 const HeaderComponent = ({ isDarkTheme, onThemeChange }) => {
@@ -97,12 +97,10 @@ const HeaderComponent = ({ isDarkTheme, onThemeChange }) => {
   );
 
   return (
-    
     <Box sx={{ flexGrow: 1, mb: 2 }}>
-      
       <AppBar position="static">
         <Toolbar>
-        <Hidden mdUp>
+          <Hidden mdUp>
             <IconButton
               size="large"
               edge="start"
@@ -123,7 +121,10 @@ const HeaderComponent = ({ isDarkTheme, onThemeChange }) => {
             LOGO
           </Typography>
 
-          <Links />
+          <Hidden mdDown>
+            <Links />
+          </Hidden>
+
           <FilterComponent />
           <Box
             sx={{
@@ -137,8 +138,8 @@ const HeaderComponent = ({ isDarkTheme, onThemeChange }) => {
             <Switch checked={isDarkTheme} onChange={handleThemeChange} />
           </Box>
           <Box sx={{ flexGrow: 1 }} />
-          
-  {login ? (
+
+          {login ? (
             <Box sx={{ display: { xs: "none", md: "flex" } }}>
               <IconButton
                 size="large"
@@ -149,27 +150,23 @@ const HeaderComponent = ({ isDarkTheme, onThemeChange }) => {
                 onClick={handleProfileMenuOpen}
                 color="inherit"
               >
-                <Avatar alt="User Avatar" />
+                <Avatar alt="User Avatar" src={login.user?.url} />
               </IconButton>
             </Box>
-  ):<></>}
-
-
-        
+          ) : (
+            <></>
+          )}
         </Toolbar>
-        
       </AppBar>
 
-      
-      <Hidden >
+      <Hidden mdUp>
         <LeftDrawerComponent
           isOpen={isOpen}
           onCloseDrawer={handleCloseDrawerClick}
         />
       </Hidden>
-     {renderMenu}
+      {renderMenu}
     </Box>
-    
   );
 };
 

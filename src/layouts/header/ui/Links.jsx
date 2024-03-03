@@ -50,7 +50,7 @@ const Links = () => {
             {item.children}
           </NavLinkComp>
         ))}
-      {loggedIn.role === "" &&
+      {!loggedIn &&
         loggedOutLinks.map((item, index) => (
           <NavLinkComp to={item.to} key={"navlink4" + index}>
             {item.children}

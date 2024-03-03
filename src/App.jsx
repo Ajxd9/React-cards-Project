@@ -16,15 +16,15 @@ function App() {
     <CardDataContext.Provider
       value={{ dataFromServer, setDataFromServer, copyCards, setCopyCards }}
     >
-    <userContext.Provider value={{ user, SetUser }}>
-    <LoginContext.Provider value={{ login, setLogin }}>
-      <CssBaseline />
-      <ToastContainer />
-      <LayoutPage>
-        <Router />
-      </LayoutPage>
-    </LoginContext.Provider>
-    </userContext.Provider>
+      <userContext.Provider value={{ user, SetUser }}>
+        <LoginContext.Provider value={{ login, setLogin }}>
+          <CssBaseline />
+          <ToastContainer />
+          <LayoutPage>
+            <Router />
+          </LayoutPage>
+        </LoginContext.Provider>
+      </userContext.Provider>
     </CardDataContext.Provider>
   );
 }

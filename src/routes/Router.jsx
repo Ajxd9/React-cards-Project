@@ -12,7 +12,7 @@ import UserCards from "../pages/ProfilePage/UserCards";
 import FavoriteCardsPage from "../pages/FavoriteCardsPage/FavoriteCardsPage";
 import UserProfilePage from "../pages/ProfilePage/UserProfilePage";
 import CardViewPage from "../pages/CardView/CardViewPage";
-import BizGuard from "../guard/AdminGuard";
+import BizGuard from "../guard/BizGuard";
 import AuthGuard from "../guard/AuthGuard";
 import AdminGuard from "../guard/AdminGuard";
 import AdminDash from "../pages/AdminPages/AdminDash";
@@ -32,7 +32,7 @@ const Router = () => {
         path={ROUTES.EDIT_USER}
         element={
           <AuthGuard>
-            <EditUserProfilePage/>
+            <EditUserProfilePage />
           </AuthGuard>
         }
       />

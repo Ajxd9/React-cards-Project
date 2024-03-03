@@ -63,17 +63,20 @@ const CardComp = ({
       children: <FavoriteIcon color={liked ? "error" : "inherit"} />,
     },
   ];
-  const logBizIcons = login.user && login.user.type === 'business' ? [
-    {
-      onClick: handleEditClick,
-      children: <ModeIcon />,
-    },
-    {
-      onClick: handleDeleteClick,
-      children: <DeleteIcon />,
-    },
-  ] : [];
-  
+  const logBizIcons =
+    (login.user && login.role === "Business") || login.role === "Admin"
+      ? [
+          {
+            onClick: handleEditClick,
+            children: <ModeIcon />,
+          },
+          {
+            onClick: handleDeleteClick,
+            children: <DeleteIcon />,
+          },
+        ]
+      : [];
+
   return (
     <Card raised>
       <CardActionArea onClick={handleClickCard}>

@@ -6,7 +6,6 @@ import ROUTES from "./ROUTES";
 import NotFoundPage from "../pages/NotFoundPage/NotFoundPage";
 import RegisterPage from "../pages/RegisterPage/RegisterPage";
 import EditCardPage from "../pages/EditCardPage/EditCardPage";
-import CreateCardPage from "../pages/CreateCardPage/CreateCardPage";
 import AboutPage from "../pages/AboutPage/AboutPage";
 import EditUserProfilePage from "../pages/EditUserProfile/EditUserProfilePage";
 import UserCards from "../pages/ProfilePage/UserCards";
@@ -17,6 +16,7 @@ import BizGuard from "../guard/AdminGuard";
 import AuthGuard from "../guard/AuthGuard";
 import AdminGuard from "../guard/AdminGuard";
 import AdminDash from "../pages/AdminPages/AdminDash";
+import CreateCardPage from "../pages/CreateCardPage/CreateCardPage";
 const Router = () => {
   return (
     <Routes>
@@ -29,7 +29,7 @@ const Router = () => {
       <Route path={ROUTES.FAV_CARD} element={<FavoriteCardsPage />} />
       <Route path={`${ROUTES.CARDS}/:id`} element={<CardViewPage />} />
       <Route
-        path={ROUTES.Edit_User}
+        path={ROUTES.EDIT_USER}
         element={
           <AuthGuard>
             <EditUserProfilePage/>

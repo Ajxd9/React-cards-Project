@@ -5,9 +5,11 @@ import ROUTES from "../routes/ROUTES";
 
 const BizGuard = ({ children }) => {
   let { login } = useContext(loginContext);
-  if ((login && login.isBusiness) || login.isAdmin) {
+ 
+  if ((login && login.role==="Business")) {
     return children;
   } else {
+    console.log("From BizGuard"+login.role);
     return <Navigate to={ROUTES.HOME} />;
   }
 };

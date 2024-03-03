@@ -8,11 +8,12 @@ import {
 import NavLinkComp from "../NavLinkComponent";
 import { Box } from "@mui/material";
 import { useContext, useEffect } from "react";
-import LoginContext from "../../../store/loginContext";
+import loginContext from "../../../store/loginContext";
 
 const Links = () => {
-  const { login } = useContext(LoginContext);
+  const { login } = useContext(loginContext);
   const loggedIn = login; // Access the token from the login state if login exists
+
   return (
     <Box
       sx={{
@@ -42,8 +43,8 @@ const Links = () => {
             {item.children}
           </NavLinkComp>
         ))}
-      {loggedIn.role === "Admin" &&
-        loggedIn.user &&
+      {loggedIn &&
+        loggedIn.role === "Admin" &&
         adminLinks.map((item, index) => (
           <NavLinkComp to={item.to} key={"navlink3" + index}>
             {item.children}

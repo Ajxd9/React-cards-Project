@@ -28,7 +28,7 @@ import {
     let { login, setLogin } = useContext(loginContext);
     const handleLogOutOrIn = () => {
       if (login) {
-        setLogin(null);
+        setLogin(false);
         localStorage.clear();
         toast.success("🦄 LoggedOut Successfully", {
           position: "top-right",

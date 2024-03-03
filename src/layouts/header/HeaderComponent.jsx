@@ -11,7 +11,7 @@ import { Switch, Avatar } from "@mui/material";
 import Links from "./ui/Links";
 import FilterComponent from "./ui/FilterComponent";
 import { useNavigate } from "react-router-dom";
-import LoginContext from "../../store/loginContext";
+import loginContext from "../../store/loginContext";
 import { useState,useContext } from "react";
 import ROUTES from "../../routes/ROUTES";
 import {toast} from "react-toastify";
@@ -20,7 +20,7 @@ import Hidden from "@mui/material/Hidden";
 const HeaderComponent = ({ isDarkTheme, onThemeChange }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [isOpen, setIsOpen] = useState(false);
-  const { setLogin } = useContext(LoginContext);
+  const { login, setLogin } = useContext(loginContext);
   const navigate = useNavigate();
 
   const isMenuOpen = Boolean(anchorEl);
@@ -53,7 +53,7 @@ const HeaderComponent = ({ isDarkTheme, onThemeChange }) => {
     handleMenuClose();
   };
   const handleLogout = () => {
-    setLogin({ user:null, role:""});
+    setLogin(false);
     toast.success("🦄 LoggedOut Successfully", {
       position: "top-right",
       autoClose: 5000,
@@ -97,7 +97,9 @@ const HeaderComponent = ({ isDarkTheme, onThemeChange }) => {
   );
 
   return (
+    
     <Box sx={{ flexGrow: 1, mb: 2 }}>
+      
       <AppBar position="static">
         <Toolbar>
         <Hidden mdUp>
@@ -135,25 +137,27 @@ const HeaderComponent = ({ isDarkTheme, onThemeChange }) => {
             <Switch checked={isDarkTheme} onChange={handleThemeChange} />
           </Box>
           <Box sx={{ flexGrow: 1 }} />
-          {setLogin.user ? (
-  <Box sx={{ display: { xs: "none", md: "flex" } }}>
-    <IconButton
-      size="large"
-      edge="end"
-      aria-label="account of current user"
-      aria-controls={menuId}
-      aria-haspopup="true"
-      onClick={handleProfileMenuOpen}
-      color="inherit"
-    >
-      {/* Assuming user contains an image URL */}
-      <Avatar alt="User Avatar" src={setLogin.user.url} />
-    </IconButton>
-  </Box>
-):<></>}
+          
+  {login ? (
+            <Box sx={{ display: { xs: "none", md: "flex" } }}>
+              <IconButton
+                size="large"
+                edge="end"
+                aria-label="account of current user"
+                aria-controls={menuId}
+                aria-haspopup="true"
+                onClick={handleProfileMenuOpen}
+                color="inherit"
+              >
+                <Avatar alt="User Avatar" />
+              </IconButton>
+            </Box>
+  ):<></>}
 
+
+        
         </Toolbar>
-        {renderMenu}
+        
       </AppBar>
 
       
@@ -163,7 +167,9 @@ const HeaderComponent = ({ isDarkTheme, onThemeChange }) => {
           onCloseDrawer={handleCloseDrawerClick}
         />
       </Hidden>
+     {renderMenu}
     </Box>
+    
   );
 };
 

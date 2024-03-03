@@ -5,7 +5,7 @@ import ROUTES from "../routes/ROUTES";
 
 const BizGuard = ({ children }) => {
   let { login } = useContext(loginContext);
-  if (login && login.isAdmin) {
+  if (login && login.role==="Admin") {
     console.log(1);
     return children;
   } else {

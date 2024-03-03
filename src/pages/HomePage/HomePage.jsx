@@ -6,9 +6,9 @@ import { useNavigate } from "react-router-dom";
 import ROUTES from "../../routes/ROUTES";
 import CardComp from "../../components/CardComponent";
 import normalizeHome from "./normalizeHome";
-import LoginContext from "../../store/loginContext";
+import loginContext from "../../store/loginContext";
 import { toast } from "react-toastify";
-import DataContext from "../../store/CardDataContext";
+import CardDataContext from "../../store/CardDataContext";
 import {
   handleDeleteCard,
   handleEditCard,
@@ -20,8 +20,8 @@ import {
 const HomePage = () => {
   const [dataFromServer, setDataFromServer] = useState([]);
   const navigate = useNavigate();
-  const { login } = useContext(LoginContext);
-  const { filterData } = useContext(DataContext);
+  let { login } = useContext(loginContext);
+  const { filterData } = useContext(CardDataContext);
 
   useEffect(() => {
     setDataFromServer(normalizeHome(filterData));

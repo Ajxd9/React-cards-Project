@@ -4,7 +4,7 @@ import { jwtDecode } from "jwt-decode";
 import LoginContext from "../store/loginContext";
 
 const useAutoLogin = () => {
-  const { setLogin } = useContext(LoginContext);
+  const { login,setLogin } = useContext(LoginContext);
   const [finishAutoLogin, setFinishAutoLogin] = useState(false);
   let token = localStorage.getItem("token");
   useEffect(() => {
@@ -23,11 +23,11 @@ const useAutoLogin = () => {
         if (res.status === 200) {
           setLogin({
             user: userData,
-            role: !userData.isBusiness
-              ? "Normal"
+            role: userData.isAdmin
+              ? "Admin"
               : userData.isBusiness
               ? "Business"
-              : "",
+              : !userData.isAdmin && !userData.isBusiness ? "Normal" : "",
           });
           setFinishAutoLogin(true);
         }

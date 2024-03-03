@@ -35,7 +35,7 @@ const AdminDash = () => {
     <>
       <Typography
         variant="h2"
-        sx={{ textAlign: "left", mb: 1, color: "black", fontFamily: "cursive" }}
+        sx={{ textAlign: "left", mb: 1, color: "black" }}
       >
         Users Informaitions
         <Typography

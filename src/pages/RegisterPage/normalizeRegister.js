@@ -1,4 +1,4 @@
-const normalizeRegister = (data) => {
+const normalizeRegister = (data, checked) => {
   return {
     name: {
       first: data.first,
@@ -20,7 +20,7 @@ const normalizeRegister = (data) => {
       houseNumber: data.houseNumber,
       zip: data.zip,
     },
-    isBusiness: true,
+    isBusiness: checked,
   };
 };
 

@@ -54,7 +54,7 @@ const FavoriteCardsPage = () => {
   };
 
   const handleClickCardWrapper = (id) => {
-    handleClickCard(id, navigate);
+    navigate(`${ROUTES.CARDS}/${id}`);
   };
 
   const handleLikeCardWrapper = async (id) => {

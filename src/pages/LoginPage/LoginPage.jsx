@@ -51,14 +51,8 @@ const LoginPage = () => {
       });
 
       const decoded = jwtDecode(data);
-
-      if (e.target.remember.checked) {
+      console.log(data);
         localStorage.setItem("token", data);
-      } else {
-        sessionStorage.setItem("token", data);
-        localStorage.setItem("token", data);
-      }
-
       setLogin(decoded);
 
       toast.success("🦄 Logged-in successfully!", {

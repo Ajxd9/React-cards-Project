@@ -1,5 +1,4 @@
 import React from "react";
-import Navbar from "../components/Navbar/Navbar";
 import HeaderComponent from "../layouts/header/HeaderComponent";
 import MainComponent from "./main/MainComponent";
 import { useState } from "react";
@@ -9,7 +8,6 @@ import tmc from "twin-moon-color";
 import useAutoLogin from '../hooks/useAutoLogin'
 import CardDataProvider from '../store/CardDataProvider';
 import FooterComponent from './footer/FooterComponent';
-import 'ldrs/bouncy';
 import { Typography } from '@mui/material';
 
 

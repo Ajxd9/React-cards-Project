@@ -12,14 +12,7 @@ import LoginContext from "../../../store/loginContext";
 
 const Links = () => {
   const { login } = useContext(LoginContext);
-  const { token } = login; // Access the token from the login state if login exists
-
-  useEffect(() => {
-    // Code that relies on the token
-    console.log("Token in YourOtherComponent:", token);
-  }, [token]);
-
-  const loggedIn = login;
+  const loggedIn = login; // Access the token from the login state if login exists
   return (
     <Box
       sx={{
@@ -49,8 +42,8 @@ const Links = () => {
             {item.children}
           </NavLinkComp>
         ))}
-      {loggedIn.role === "Normal" &&
-        loggedIn.isAdmin &&
+      {loggedIn.role === "Admin" &&
+        loggedIn.user &&
         adminLinks.map((item, index) => (
           <NavLinkComp to={item.to} key={"navlink3" + index}>
             {item.children}

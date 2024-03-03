@@ -13,8 +13,10 @@ const bizLinks = [
 ];
 
 const adminLinks = [
+  { to: ROUTES.MY_CARD, children: "My Cards" },
   { to: ROUTES.EDIT_USER, children: "Edit User" },
   { to: ROUTES.CREATECARD, children: "Create Card" },
+  { to: ROUTES.ADMIN_DASH, children: "Admin Dashboard" },
 ];
 
 const loggedOutLinks = [
@@ -23,3 +25,5 @@ const loggedOutLinks = [
 ];
 
 export { alwaysLinks, loggedInLinks, bizLinks, loggedOutLinks, adminLinks };
+
+

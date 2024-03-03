@@ -1,26 +1,35 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import {
-  Avatar,
-  Box,
-  Checkbox,
-  Grid,
-  Typography,
-  TextField,
-  FormControlLabel,
-  Alert,
-} from "@mui/material";
+import { useState } from "react";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Typography from "@mui/material/Typography";
 import axios from "axios";
-import { toast } from "react-toastify";
-import FormButtonComponent from "../../components/FormButtonComponent";
 import ROUTES from "../../routes/ROUTES";
+import { useNavigate, Link } from "react-router-dom";
 import normalizeRegister from "./normalizeRegister";
-import { validateSchema } from "../../validation/registerValidation";
-import Joi from "joi";
+import { toast } from "react-toastify";
 
+import { validateSchema } from "../../validation/registerValidation";
+import TextFieldComponent from "../../components/TextFieldComponent";
 
 const RegisterPage = () => {
+  const [btn, setbtn] = useState(true);
+  const [errors, setErrors] = useState({
+    first: "",
+    last: "",
+    email: "",
+    password: "",
+    phone: "",
+    country: "",
+    city: "",
+    street: "",
+    houseNumber: "",
+    zip: "",
+  });
   const [inputsValue, setInputsValue] = useState({
     first: "",
     middle: "",
@@ -36,20 +45,8 @@ const RegisterPage = () => {
     street: "",
     houseNumber: "",
     zip: "",
-    isBusiness: null,
   });
-  const [errors, setErrors] = useState({
-    first: "",
-    last: "",
-    email: "",
-    password: "",
-    phone: "",
-    country: "",
-    city: "",
-    street: "",
-    houseNumber: "",
-    zip: "",
-  });
+  const [checked, setChecked] = useState(false);
   const navigate = useNavigate();
   const handleInputsChange = (e) => {
     setInputsValue((CopyOfCurrentValue) => ({
@@ -60,8 +57,8 @@ const RegisterPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("/users", normalizeRegister(inputsValue));
-      toast.success("🦄 Registered successfully!", {
+      await axios.post("/users", normalizeRegister(inputsValue, checked));
+      toast.success("🦄 Registered Successfully!", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -69,35 +66,20 @@ const RegisterPage = () => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
+        theme: "light",
       });
       navigate(ROUTES.LOGIN);
     } catch (err) {
-      console.log("err from axios", err);
-      toast.error("🦄 Register failed!", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      console.log("error from axios", err);
     }
   };
+  let keysArray = Object.keys(inputsValue);
   const handleInputsBlur = (e) => {
-    /**
-     * validateSchema[e.target.id] -> function to validate the current input
-     * inputsValue[e.target.id] -> the value inside the input
-     */
     let dataFromJoi = validateSchema[e.target.id]({
       [e.target.id]: inputsValue[e.target.id],
     });
-    /*
-      {email:emailValue}
-    */
-    console.log("dataFromJoi", dataFromJoi);
+    console.log(dataFromJoi);
     if (dataFromJoi.error) {
-      // setPasswordError(dataFromJoi.error.details[0].message);
       setErrors((copyOfErrors) => ({
         ...copyOfErrors,
         [e.target.id]: dataFromJoi.error.details[0].message,
@@ -105,16 +87,32 @@ const RegisterPage = () => {
     } else {
       setErrors((copyOfErrors) => {
         delete copyOfErrors[e.target.id];
+        setbtn(false);
         return { ...copyOfErrors };
       });
     }
-    // if (dataFromJoi.error) {
-    //   setPasswordError(dataFromJoi.error.details[0].message);
-    // } else {
-    //   setPasswordError("");
-    // }
   };
-  
+  const handleCheckboxChange = (e) => {
+    setChecked(e.target.checked);
+  };
+  const isrequired = (fieldName) => {
+    if (
+      fieldName === "first" ||
+      fieldName === "last" ||
+      fieldName === "phone" ||
+      fieldName === "password" ||
+      fieldName === "email" ||
+      fieldName === "country" ||
+      fieldName === "street" ||
+      fieldName === "city" ||
+      fieldName === "houseNumber" ||
+      fieldName === "zip"
+    ) {
+      return true;
+    }
+    return false;
+  };
+
   return (
     <Box
       sx={{
@@ -124,7 +122,7 @@ const RegisterPage = () => {
         alignItems: "center",
       }}
     >
-      <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+      <Avatar sx={{ m: 1, bgcolor: "black" }}>
         <LockOutlinedIcon />
       </Avatar>
       <Typography component="h1" variant="h5">
@@ -132,214 +130,47 @@ const RegisterPage = () => {
       </Typography>
       <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 3 }}>
         <Grid container spacing={2}>
-          <Grid item xs={12} sm={4}>
-          <TextField
-  autoComplete="given-name"
-  name="first"
-  required
-  fullWidth
-  id="first"
-  label="First Name"
-  autoFocus
-  value={inputsValue.first}
-  onChange={handleInputsChange}
-  onBlur={handleInputsBlur}
-        />
-       {errors.first && <Alert severity="error">{errors.first}</Alert>}
-      </Grid>
-          <Grid item xs={12} sm={4}>
-            <TextField
-              autoComplete="given-name"
-              name="middle"
-              fullWidth
-              id="middle"
-              label="Middle Name"
-              autoFocus
-              value={inputsValue.middle}
-              onChange={handleInputsChange}
-            />
-          </Grid>
-          <Grid item xs={12} sm={4}>
-            <TextField
-              required
-              fullWidth
-              id="last"
-              label="Last Name"
-              name="last"
-              autoComplete="family-name"
-              value={inputsValue.last}
+          {keysArray.map((keyName) => (
+            <TextFieldComponent
+              key={"inputs" + keyName}
+              id={keyName}
+              label={keyName}
+              value={inputsValue[keyName]}
               onChange={handleInputsChange}
               onBlur={handleInputsBlur}
+              errors={errors[keyName]}
+              required={isrequired(keyName)}
+              className="input"
             />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              value={inputsValue.email}
-              onChange={handleInputsChange}
-              onBlur={handleInputsBlur}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="new-password"
-              value={inputsValue.password}
-              onChange={handleInputsChange}
-              onBlur={handleInputsBlur}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              required
-              fullWidth
-              name="phone"
-              label="Phone"
-              id="phone"
-              autoComplete="new-phone"
-              value={inputsValue.phone}
-              onChange={handleInputsChange}
-              onBlur={handleInputsBlur}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              fullWidth
-              name="url"
-              label="Url"
-              id="url"
-              autoComplete="new-url"
-              value={inputsValue.url}
-              onChange={handleInputsChange}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              fullWidth
-              name="alt"
-              label="Alt"
-              id="alt"
-              autoComplete="new-alt"
-              value={inputsValue.alt}
-              onChange={handleInputsChange}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              fullWidth
-              name="state"
-              label="State"
-              id="state"
-              autoComplete="new-state"
-              value={inputsValue.state}
-              onChange={handleInputsChange}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              required
-              fullWidth
-              name="country"
-              label="Country"
-              id="country"
-              autoComplete="new-country"
-              value={inputsValue.country}
-              onChange={handleInputsChange}
-              onBlur={handleInputsBlur}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              required
-              fullWidth
-              name="city"
-              label="City"
-              id="city"
-              autoComplete="new-city"
-              value={inputsValue.city}
-              onChange={handleInputsChange}
-              onBlur={handleInputsBlur}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              required
-              fullWidth
-              name="street"
-              label="Street"
-              id="street"
-              autoComplete="new-street"
-              value={inputsValue.street}
-              onChange={handleInputsChange}
-              onBlur={handleInputsBlur}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              required
-              fullWidth
-              name="houseNumber"
-              label="House Number"
-              id="houseNumber"
-              autoComplete="new-houseNumber"
-              value={inputsValue.houseNumber}
-              onChange={handleInputsChange}
-              onBlur={handleInputsBlur}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              fullWidth
-              name="zip"
-              label="Zip"
-              id="zip"
-              autoComplete="new-zip"
-              value={inputsValue.zip}
-              onChange={handleInputsChange}
-              onBlur={handleInputsBlur}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  value="isBusiness"
-                  id="isBusiness"
-                  color="primary"
-                  checked={inputsValue.isBusiness}
-                  onChange={handleInputsChange}
-                />
-              }
-              label="Business Account"
-            />
-          </Grid>
+          ))}
         </Grid>
-        <FormButtonComponent
+
+        <Grid item xs={12}>
+          <FormControlLabel
+            control={<Checkbox value="allowExtraEmails" color="primary" />}
+            label="Business Account"
+            onChange={handleCheckboxChange}
+            checked={checked}
+          />
+        </Grid>
+        <Button
           type="submit"
-          variant="contained"
-          shape={"mt: 3, mb: 2"}
-          disabled={errors}
+          fullWidth
+          sx={{ mt: 3, mb: 2, bgcolor: "#ff5722", color: "black" }}
+          disabled={btn}
+          className="button-submit"
         >
           Sign Up
-        </FormButtonComponent>
-        <Grid container justifyContent="flex-end">
-          <Grid item>
-            <Link to={ROUTES.LOGIN}>Already have an account? Sign in</Link>
-          </Grid>
-        </Grid>
+        </Button>
       </Box>
+      <Grid container justifyContent="flex-end">
+        <Grid item>
+          <Link to={ROUTES.LOGIN} variant="body2" className="span">
+            Already have an account? Sign in
+          </Link>
+        </Grid>
+      </Grid>
     </Box>
   );
 };
-
 export default RegisterPage;

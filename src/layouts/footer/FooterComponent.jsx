@@ -26,7 +26,7 @@ const FooterComponent = () => {
     { value: ROUTES.MY_CARDS, icon: <AccountBoxIcon />, label: "My Cards" },
   ];
 
-  const handleNavigationChange = (event, newValue) => {
+  const handleNavigationChange = (event,newValue) => {
     setSelectedValue(newValue);
     navigate(newValue);
   };
@@ -53,8 +53,7 @@ const FooterComponent = () => {
             key={"nav" + index}
             label={item.label}
             icon={item.icon}
-            component={Link}
-            to={item.value}
+            onClick={() => navigate(item.value)} 
           />
         ))}
         {loggedIn.user &&
@@ -63,8 +62,7 @@ const FooterComponent = () => {
               key={"nav" + index}
               label={item.label}
               icon={item.icon}
-              component={Link}
-              to={item.value}
+              onClick={() => navigate(item.value)} 
             />
           ))}
         {loggedIn.user &&
@@ -74,8 +72,7 @@ const FooterComponent = () => {
               key={"nav" + index}
               label={item.label}
               icon={item.icon}
-              component={Link}
-              to={item.value}
+              onClick={() => navigate(item.value)} 
             />
           ))}
       </BottomNavigation>

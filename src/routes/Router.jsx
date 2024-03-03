@@ -5,7 +5,6 @@ import LoginPage from "../pages/LoginPage/LoginPage";
 import ROUTES from "./ROUTES";
 import NotFoundPage from "../pages/NotFoundPage/NotFoundPage";
 import RegisterPage from "../pages/RegisterPage/RegisterPage";
-import DashboardPage from "../pages/DashboardPage";
 import EditCardPage from "../pages/EditCardPage/EditCardPage";
 import CreateCardPage from "../pages/CreateCardPage/CreateCardPage";
 import AboutPage from "../pages/AboutPage/AboutPage";
@@ -13,11 +12,11 @@ import EditUserProfilePage from "../pages/EditUserProfile/EditUserProfilePage";
 import UserCards from "../pages/ProfilePage/UserCards";
 import FavoriteCardsPage from "../pages/FavoriteCardsPage/FavoriteCardsPage";
 import UserProfilePage from "../pages/ProfilePage/UserProfilePage";
-import FirstComponent from "./../sandbox/components/FirstComponent";
-import FatherComponent from "../sandbox/components/fatherchild/FatherComponent";
-import SandboxPage from "../sandbox/pages/SandboxPage";
-import LifeCycleHooksPage from "../sandbox/pages/LifeCycleHooksPage";
 import CardViewPage from "../pages/CardView/CardViewPage";
+import BizGuard from "../guard/AdminGuard";
+import AuthGuard from "../guard/AuthGuard";
+import AdminGuard from "../guard/AdminGuard";
+import AdminDash from "../pages/AdminPages/AdminDash";
 const Router = () => {
   return (
     <Routes>
@@ -26,19 +25,41 @@ const Router = () => {
       <Route path={ROUTES.ABOUT} element={<AboutPage />} />
       <Route path={ROUTES.SIGNUP} element={<RegisterPage />} />
       <Route path={ROUTES.USER_PROFILE} element={<UserProfilePage />} />
-      <Route path={ROUTES.EDIT_USER} element={<EditUserProfilePage />} />
-      <Route path={ROUTES.SANDBOX} element={<DashboardPage />} />
-      <Route path={`${ROUTES.EDITCARD}/:id`} element={<EditCardPage />} />
-      <Route path={ROUTES.EDITCARD} element={<EditCardPage />} />
       <Route path={ROUTES.MY_CARD} element={<UserCards />} />
       <Route path={ROUTES.FAV_CARD} element={<FavoriteCardsPage />} />
-      <Route path={ROUTES.CREATECARD} element={<CreateCardPage />} />
       <Route path={`${ROUTES.CARDS}/:id`} element={<CardViewPage />} />
-      <Route path="/sandbox" element={<SandboxPage />}>
-        <Route path="first-component" element={<FirstComponent />} />
-        <Route path="fc" element={<FatherComponent />} />
-        <Route path="lch" element={<LifeCycleHooksPage />} />
-      </Route>
+      <Route
+        path={ROUTES.Edit_User}
+        element={
+          <AuthGuard>
+            <EditUserProfilePage/>
+          </AuthGuard>
+        }
+      />
+      <Route
+        path={ROUTES.CREATECARD}
+        element={
+          <BizGuard>
+            <CreateCardPage />
+          </BizGuard>
+        }
+      />
+      <Route
+        path={`${ROUTES.EDITCARD}/:id`}
+        element={
+          <BizGuard>
+            <EditCardPage />
+          </BizGuard>
+        }
+      />
+      <Route
+        path={ROUTES.ADMIN_DASH}
+        element={
+          <AdminGuard>
+            <AdminDash />
+          </AdminGuard>
+        }
+      />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );

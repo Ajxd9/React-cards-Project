@@ -1,15 +1,14 @@
 import { useContext } from "react";
+import loginContext from "../store/loginContext";
 import { Navigate } from "react-router-dom";
-import LoginContext from "../store/loginContext";
 import ROUTES from "../routes/ROUTES";
 
-const BizGuard = ({children}) => {
-  const { login } = useContext(LoginContext);
-  if(login.user && login.role === "Business"){
+const BizGuard = ({ children }) => {
+  let { login } = useContext(loginContext);
+  if ((login && login.isBusiness) || login.isAdmin) {
     return children;
-  }else{
-    return <Navigate to={ROUTES.LOGIN}/>;
+  } else {
+    return <Navigate to={ROUTES.HOME} />;
   }
 };
-
 export default BizGuard;

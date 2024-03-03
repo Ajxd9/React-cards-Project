@@ -12,7 +12,7 @@ const normalizeFromServer = (dataFromServer) => {
     middle: name.middle || '',
     last: name.last || '',
     phone: dataFromServer.phone || '',
-    url: image.url || '',
+    ImageUrl: image.url || '',
     alt: image.alt || '',
     state: address.state || '',
     country: address.country || '',

@@ -8,7 +8,7 @@ const AuthGuard = ({ children}) => {
   if(login.user){
     return children;
   }else{
-    return <Navigate to={ROUTES.LOGIN}/>;    
+    return <Navigate to={ROUTES.HOME}/>;    
   }
 }
 

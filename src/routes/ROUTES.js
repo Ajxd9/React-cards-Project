@@ -11,6 +11,7 @@ const ROUTES = {
   CREATECARD: "/createcard",
   SANDBOX: "/sandbox",
   CARDS: "/cards",
+  ADMIN_DASH:"/admin-dash",
   NOTFOUND: "/404",
 };
 export default ROUTES;

@@ -35,7 +35,7 @@ const UserCards = () => {
     navigate(`${ROUTES.EDITCARD}/${id}`);
   };
   const handleClickCard = (id) => {
-    navigate(`${ROUTES.VIEWCARD}/${id}`);
+    navigate(`${ROUTES.CARDS}/${id}`);
   };
 
   const handleDeleteCard = async (id) => {

@@ -44,7 +44,7 @@ const HeaderComponent = ({ isDarkTheme, onThemeChange }) => {
   };
 
   const handleNavigateToProfile = () => {
-    navigate(ROUTES.USER_PROFILE);
+    navigate(`${ROUTES.USER_PROFILE}/${login.user._id}`);
     handleMenuClose();
   };
 
